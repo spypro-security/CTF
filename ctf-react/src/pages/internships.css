@@ -1,0 +1,169 @@
+/* ===============================
+   GLOBAL PAGE BACKGROUND
+================================ */
+body {
+  background-color: #f8fafc; /* very light professional background */
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ===============================
+   HEADING
+================================ */
+.internships-heading {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.internships-heading h2 {
+  font-size: 34px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 6px;
+}
+
+.internships-heading p {
+  font-size: 16px;
+  color: #64748b;
+}
+
+/* ===============================
+   GRID
+================================ */
+.internships-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  padding: 40px 30px;
+}
+
+/* ===============================
+   RESPONSIVE GRID
+================================ */
+@media (max-width: 900px) {
+  .internships-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .internships-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===============================
+   CARD (LIGHT & CLEAN)
+================================ */
+.internship-card {
+  padding: 20px;
+  text-align: center;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* ===============================
+   IMAGE (BIG & CLEAR)
+================================ */
+.internship-image {
+  width: 100%;
+  height: 200px;
+  object-fit: contain;
+  margin-bottom: 16px;
+}
+
+/* ===============================
+   TITLE & DESCRIPTION
+================================ */
+.internship-card h3 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #0f172a;
+  margin-bottom: 6px;
+}
+
+.internship-card p {
+  font-size: 14px;
+  color: #64748b;
+  margin-bottom: 14px;
+}
+
+/* ===============================
+   SKILLS
+================================ */
+.skills-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.skill-tag {
+  font-size: 12px;
+  padding: 5px 14px;
+  background-color: #f1f5f9;
+  color: #334155;
+  border-radius: 20px;
+}
+
+/* ===============================
+   BUTTON
+================================ */
+.apply-button {
+  font-size: 14px;
+  padding: 9px 22px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  transition: opacity 0.2s ease;
+}
+
+.apply-button:hover {
+  opacity: 0.9;
+}
+
+/* ===============================
+   BUTTON COLORS (SOFT)
+================================ */
+.btn-blue {
+  background-color: #3b82f6;
+}
+
+.btn-orange {
+  background-color: #fb923c;
+}
+
+.btn-purple {
+  background-color: #8b5cf6;
+}
+
+.btn-green {
+  background-color: #22c55e;
+}
+
+.btn-yellow {
+  background-color: #eab308;
+  color: #1f2933;
+}
+
+.btn-pink {
+  background-color: #ec4899;
+}
+
+/* ===============================
+   REMOVE OLD DECORATIONS
+================================ */
+.corner-decoration {
+  display: none;
+}
+
+.bg-blue-50,
+.bg-orange-50,
+.bg-purple-50,
+.bg-green-50,
+.bg-yellow-50,
+.bg-pink-50 {
+  background: transparent;
+}

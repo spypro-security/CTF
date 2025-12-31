@@ -1,0 +1,28 @@
+.practice-container {
+  padding: 40px;
+  text-align: center;
+}
+
+.practice-grid {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 30px;
+}
+
+.practice-card {
+  width: 300px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+}
+
+.practice-card button {
+  margin-top: 15px;
+  padding: 10px;
+  border: none;
+  background-color: #6a5acd;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}

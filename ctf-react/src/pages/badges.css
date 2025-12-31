@@ -1,0 +1,35 @@
+.badges-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.badges-sidebar {
+  width: 280px;
+  border-right: 1px solid #ddd;
+  padding: 20px;
+}
+
+.badge-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-bottom: 5px;
+}
+
+.badge-item:hover {
+  background-color: #f2f2f2;
+}
+
+.badge-count {
+  background-color: #8b6de8;
+  color: white;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+}
+
+.badges-content {
+  padding: 40px;
+}
