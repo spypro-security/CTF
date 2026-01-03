@@ -4,15 +4,16 @@ import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Internships from "./pages/Internships";
 import Jobs from "./pages/Jobs";
-import Workshops from "./pages/Workshops";  
+import Workshops from "./pages/Workshops";
 import JobDetail from "./pages/JobDetail";
 import JobApplication from "./pages/JobApplication";
 import Competitions from "./pages/Competitions";
 import Practice from "./pages/Practice";
 import Badges from "./pages/Badges";
-import Introduction from "./pages/Introduction"; // ✅ IMPORTANT
+import Introduction from "./pages/Introduction";
 import Topic from "./pages/Topic";
 import ApplicationResult from "./pages/ApplicationResult";
+import WorkshopCurriculum from "./pages/WorkshopCurriculum"; // ✅ NEW
 
 function App() {
   return (
@@ -28,17 +29,20 @@ function App() {
           <Route path="/job-detail" element={<JobDetail />} />
           <Route path="/job-application" element={<JobApplication />} />
           <Route path="/competitions" element={<Competitions />} />
-          <Route path="/Workshop" element={<Workshops />} />
+          <Route path="/workshop" element={<Workshops />} />
+
+          {/* ✅ Workshop Curriculum */}
+          <Route
+            path="/workshop-curriculum"
+            element={<WorkshopCurriculum />}
+          />
 
           {/* Practice Flow */}
           <Route path="/practice" element={<Practice />} />
           <Route path="/practice/badges" element={<Badges />} />
 
           {/* Badge Topics */}
-          <Route
-            path="/practice/introduction"
-            element={<Introduction />} // ✅ QUESTIONS PAGE
-          />
+          <Route path="/practice/introduction" element={<Introduction />} />
           <Route path="/practice/unix" element={<Topic title="Unix" />} />
           <Route path="/practice/essential" element={<Topic title="Essential" />} />
           <Route path="/practice/pcap" element={<Topic title="PCAP Badge" />} />
@@ -60,7 +64,10 @@ function App() {
             element={<Topic title="Capture The Flag" />}
           />
 
-          <Route path="/application-result" element={<ApplicationResult />} />
+          <Route
+            path="/application-result"
+            element={<ApplicationResult />}
+          />
         </Routes>
       </div>
     </>

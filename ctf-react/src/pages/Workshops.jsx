@@ -1,10 +1,13 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 function Workshops() {
+  const navigate = useNavigate();
+
   const workshops = [
     {
       id: 1,
-      title: "Ethical Hacking Workshop",
+      title: "CyberSecurity Workshop",
       status: "Upcoming",
       date: "25 Jan 2026",
       desc: "Learn penetration testing & real-world attack methods",
@@ -13,31 +16,58 @@ function Workshops() {
     },
     {
       id: 2,
-      title: "AI for Cyber Security",
+      title: "IoT Integrated with AI Workshop",
       status: "Upcoming",
-      date: "10 Feb 2026",
-      desc: "Work on AI-driven threat detection systems",
-      skills: ["Python", "ML", "Security"],
-      highlight: true, // center card highlight
+      date: "15 Feb 2026",
+      desc: "Hands-on IoT projects using AI for smart solutions",
+      skills: ["IoT", "AI", "Python"],
+      highlight: true,
     },
     {
       id: 3,
-      title: "CTF Beginner Workshop",
-      status: "Completed",
-      date: "22 Nov 2025",
-      desc: "Hands-on Capture The Flag challenges",
-      skills: ["CTF", "Linux", "OSINT"],
+      title: "IoT Integrated with ML Workshop",
+      status: "Upcoming",
+      date: "20 Feb 2026",
+      desc: "Learn machine learning applications in IoT environments",
+      skills: ["IoT", "ML", "Python"],
       highlight: false,
     },
     {
       id: 4,
-      title: "Web Security Basics",
-      status: "Completed",
-      date: "10 Dec 2025",
-      desc: "Understand OWASP Top 10 vulnerabilities",
-      skills: ["OWASP", "Web", "Security"],
+      title: "Python Full Stack Development Workshop",
+      status: "Upcoming",
+      date: "10 Mar 2026",
+      desc: "Build dynamic web applications using Python frameworks",
+      skills: ["Python", "Django", "Flask"],
       highlight: false,
     },
+    {
+      id: 5,
+      title: "Java Full Stack Development Workshop",
+      status: "Upcoming",
+      date: "05 Apr 2026",
+      desc: "Create robust web applications with Java technologies",
+      skills: ["Java", "Spring", "Hibernate"],
+      highlight: false,
+    },
+    {
+      id: 6,
+      title: "Power BI with Gen AI Workshop",
+      status: "Upcoming",
+      date: "15 Apr 2026",
+      desc: "Master data visualization and business intelligence with Power BI",
+      skills: ["Power BI", "Data Visualization", "DAX"],
+      highlight: false,
+    },
+    {
+      id: 7,
+      title: "Ethical Hacking Workshop",
+      status: "Upcoming",
+      date: "20 Apr 2026",
+      desc: "Learn ethical hacking techniques and security testing",
+      skills: ["Ethical Hacking", "Security Testing", "Penetration Testing"],
+      highlight: false,
+    }
   ];
 
   return (
@@ -48,51 +78,59 @@ function Workshops() {
       </p>
 
       <div style={styles.grid}>
-        {workshops.map((item) => (
-          <div
-            key={item.id}
-            style={{
-              ...styles.card,
-              border: item.highlight ? "2px solid #6c63ff" : "none",
-              transform: item.highlight ? "scale(1.03)" : "none",
-            }}
-          >
-            <h2 style={styles.title}>{item.title}</h2>
-            <p style={styles.company}>Spypro Security Solutions Pvt. Ltd.</p>
+        {workshops.map((item) => {
+          const isUpcoming = item.status.toLowerCase() === "upcoming";
 
-            <div style={styles.badges}>
-              <span style={styles.badge}>📅 {item.date}</span>
-              <span
-                style={{
-                  ...styles.badge,
-                  backgroundColor:
-                    item.status === "Upcoming" ? "#e8f5e9" : "#fcebea",
-                  color: item.status === "Upcoming" ? "#2e7d32" : "#c62828",
-                }}
-              >
-                {item.status}
-              </span>
-            </div>
+          return (
+            <div
+              key={item.id}
+              style={{
+                ...styles.card,
+                border: item.highlight ? "2px solid #6c63ff" : "none",
+                transform: item.highlight ? "scale(1.03)" : "none",
+              }}
+            >
+              <h2 style={styles.title}>{item.title}</h2>
+              <p style={styles.company}>Spypro Security Solutions Pvt. Ltd.</p>
 
-            <p style={styles.desc}>{item.desc}</p>
-
-            <div style={styles.skills}>
-              {item.skills.map((skill, i) => (
-                <span key={i} style={styles.skill}>
-                  {skill}
+              <div style={styles.badges}>
+                <span style={styles.badge}>📅 {item.date}</span>
+                <span
+                  style={{
+                    ...styles.badge,
+                    backgroundColor: isUpcoming ? "#e8f5e9" : "#fcebea",
+                    color: isUpcoming ? "#2e7d32" : "#c62828",
+                  }}
+                >
+                  {item.status}
                 </span>
-              ))}
-            </div>
+              </div>
 
-            {item.status === "Upcoming" ? (
-              <button style={styles.button}>Register Now</button>
-            ) : (
-              <button style={{ ...styles.button, opacity: 0.6 }} disabled>
-                Completed
-              </button>
-            )}
-          </div>
-        ))}
+              <p style={styles.desc}>{item.desc}</p>
+
+              <div style={styles.skills}>
+                {item.skills.map((skill, i) => (
+                  <span key={i} style={styles.skill}>
+                    {skill}
+                  </span>
+                ))}
+              </div>
+
+              {isUpcoming ? (
+                <button
+                  style={styles.button}
+                  onClick={() => navigate("/workshop-curriculum")}
+                >
+                  Register Now
+                </button>
+              ) : (
+                <button style={{ ...styles.button, opacity: 0.6 }} disabled>
+                  Completed
+                </button>
+              )}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
