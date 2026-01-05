@@ -119,7 +119,7 @@ function Workshops() {
               {isUpcoming ? (
                 <button
                   style={styles.button}
-                  onClick={() => navigate("/workshop-curriculum")}
+                  onClick={() => navigate("/workshop-curriculum", { state: { title: item.title } })}
                 >
                   Register Now
                 </button>
