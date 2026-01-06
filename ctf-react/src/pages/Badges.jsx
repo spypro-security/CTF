@@ -7,20 +7,17 @@ function Badges() {
 
   const topics = [
     { name: "Introduction", count: "0 / 4", path: "introduction" },
-    { name: "Unix", count: "0 / 35", path: "unix" },
-    { name: "Essential", count: "0 / 60", path: "essential" },
-    { name: "PCAP badge", count: "0 / 35", path: "pcap" },
-    { name: "HTTP", count: "0 / 43", path: "http" },
-    { name: "White", count: "0 / 6", path: "white" },
-    { name: "Serialize", count: "0 / 5", path: "serialize" },
-    { name: "Yellow", count: "0 / 7", path: "yellow" },
-    { name: "Blue", count: "0 / 11", path: "blue" },
-    { name: "Green", count: "0 / 16", path: "green" },
-    { name: "Orange", count: "0 / 15", path: "orange" },
-    { name: "Intercept", count: "0 / 5", path: "intercept" },
-    { name: "Authentication / Authorization", count: "0 / 25", path: "auth" },
-    { name: "Android", count: "0 / 8", path: "android" },
-    { name: "Capture-The-Flag", count: "0 / 6", path: "ctf" }
+    { name: "Unix", count: "0 /4", path: "unix" },
+    { name: "Essential", count: "0 /4", path: "essential" },
+    { name: "PCAP badge", count: "0 /4", path: "pcap" },
+    { name: "HTTP", count: "0 / 4", path: "http" },
+   
+    { name: "Serialize", count: "0 / 4", path: "serialize" },
+  
+    { name: "Intercept", count: "0 / 4", path: "intercept" },
+    { name: "Authentication / Authorization", count: "0 / 4", path: "auth" },
+    { name: "Android", count: "0 / 4", path: "android" },
+   
   ];
 
   return (

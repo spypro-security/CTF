@@ -9,6 +9,23 @@
   padding: 20px;
 }
 
+/* Responsive: stack sidebar on top on small screens */
+@media (max-width: 900px) {
+  .badges-container {
+    flex-direction: column;
+  }
+
+  .badges-sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .badges-content {
+    padding: 20px;
+  }
+}
+
 .badge-item {
   display: flex;
   justify-content: space-between;

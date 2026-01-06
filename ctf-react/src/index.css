@@ -43,6 +43,21 @@
   margin-left: 40px;
 }
 
+/* Prefer class-based menu so React inline styles don't override media queries */
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 20px;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+/* Push menu to far right when space allows */
+.nav-links {
+  margin-left: auto;
+}
+
 .navbar ul li a {
   text-decoration: none;
   color: #1e40af;
@@ -186,4 +201,85 @@
 .tag {
   color: white;
   margin-top: 15px;
+}
+
+/* Layout helpers and responsive tweaks */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+img, svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* allow brand content to shrink inside a flex container (prevents overflow) */
+.brand {
+  min-width: 0;
+  flex-shrink: 1;
+}
+
+.company-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.brand-logo {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.company-name {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1e40af;
+  margin: 0;
+}
+
+/* Ensure top sections don't get hidden under fixed nav on very small screens */
+@media (max-width: 480px) {
+  .company-name { font-size: 14px; }
+  :root { --nav-height: 56px; }
+}
+
+/* On small screens reduce company name width so hamburger is reachable */
+@media (max-width: 768px) {
+  .company-name {
+    max-width: calc(100% - 80px);
+    font-size: 15px;
+  }
+
+  .hamburger {
+    font-size: 22px;
+    padding: 6px 8px;
+  }
+}
+
+/* make page padding responsive */
+.page {
+  padding: 4rem 1rem;
+}
+
+/* reduce hero height on small devices so content is reachable */
+@media (max-width: 768px) {
+  .hero { min-height: 60vh; height: auto; }
+  .overlay h1 { font-size: 36px; }
+}
+
+/* ensure the nav-links class is hidden on mobile */
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .hamburger { display: block; }
 }

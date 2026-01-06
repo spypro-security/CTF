@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const EnrollForm = ({ onClose, workshopType }) => {
+const EnrollForm = ({ onSubmitSuccess, onCancel, onClose, workshopType }) => {
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -11,19 +11,24 @@ const EnrollForm = ({ onClose, workshopType }) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const [showConfirm, setShowConfirm] = useState(false);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert(
-      `Successfully Enrolled!\n\nWorkshop: ${workshopType}\nName: ${formData.fullName}\nEmail: ${formData.email}\nContact: ${formData.contact}`
-    );
-    onClose(); // Close the form after submission
+    setShowConfirm(true);
+  };
+
+  const confirmAndClose = () => {
+    const submitHandler = onSubmitSuccess || onClose;
+    if (submitHandler) submitHandler(formData);
+    setShowConfirm(false);
   };
 
   return (
     <>
       <div className="enroll-overlay">
         <div className="enroll-container">
-          <h2>Enroll for {workshopType} Workshop</h2>
+          <h2>Enroll for {workshopType}</h2>
           <form onSubmit={handleSubmit}>
             <label>Full Name</label>
             <input
@@ -59,7 +64,10 @@ const EnrollForm = ({ onClose, workshopType }) => {
               <button
                 type="button"
                 className="btn cancel"
-                onClick={onClose}
+                onClick={() => {
+                  const cancelHandler = onCancel || onClose;
+                  if (cancelHandler) cancelHandler();
+                }}
               >
                 Cancel
               </button>
@@ -67,6 +75,32 @@ const EnrollForm = ({ onClose, workshopType }) => {
           </form>
         </div>
       </div>
+
+      {showConfirm && (
+        <div className="enroll-overlay">
+          <div className="enroll-container">
+            <h3>Successfully Enrolled!</h3>
+            <p>
+              <strong>Workshop:</strong> {workshopType}
+            </p>
+            <p>
+              <strong>Name:</strong> {formData.fullName}
+            </p>
+            <p>
+              <strong>Email:</strong> {formData.email}
+            </p>
+            <p>
+              <strong>Contact:</strong> {formData.contact}
+            </p>
+
+            <div style={{ display: "flex", gap: 10, justifyContent: "center", marginTop: 10 }}>
+              <button className="btn submit" onClick={confirmAndClose}>
+                OK
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <style>{`
         .enroll-overlay {

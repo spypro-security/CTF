@@ -4,30 +4,26 @@ function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
+    setIsMenuOpen((s) => !s);
   };
 
   return (
-    <nav className="navbar" style={styles.navbar}>
-      {/* Logo + Company Name */}
-      <div style={styles.brand}>
-        <img src="/logo.png" alt="SpyPro Logo" style={styles.logo} />
-        <h3 style={styles.companyName}>
-          SpyPro Security Solutions Pvt. Ltd.
-        </h3>
+    <nav className="navbar">
+      <div className="brand">
+        <img src="/logo.png" alt="SpyPro Logo" className="brand-logo" />
+        <h3 className="company-name">SpyPro Security Solutions Pvt.Ltd.</h3>
       </div>
 
-      <ul style={styles.menu}>
+      <ul className="nav-links">
         <li><a href="/">Home</a></li>
         <li><a href="/internships">Internships</a></li>
         <li><a href="/jobs">Jobs</a></li>
         <li><a href="/competitions">Competitions</a></li>
         <li><a href="/practice">Practice</a></li>
-        <li><a href="/Workshop">Workshop</a></li>
-        
+        <li><a href="/workshop">Workshop</a></li>
       </ul>
 
-      <button className="hamburger" onClick={toggleMenu}>
+      <button className="hamburger" aria-label="Toggle menu" onClick={toggleMenu}>
         {isMenuOpen ? "✕" : "☰"}
       </button>
 
@@ -38,44 +34,11 @@ function Navbar() {
           <li><a href="/jobs" onClick={toggleMenu}>Jobs</a></li>
           <li><a href="/competitions" onClick={toggleMenu}>Competitions</a></li>
           <li><a href="/practice" onClick={toggleMenu}>Practice</a></li>
-          <li><a href="/Workshop" onClick={toggleMenu}>Workshop</a></li>
+          <li><a href="/workshop" onClick={toggleMenu}>Workshop</a></li>
         </ul>
-        <button className="login-btn">Log In</button>
       </div>
     </nav>
   );
 }
-
-const styles = {
-  navbar: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    padding: "14px 28px",
-    backgroundColor: "#ffffff",
-    borderBottom: "1px solid #e5e7eb",
-  },
-  brand: {
-    display: "flex",
-    alignItems: "center",
-    gap: "12px",
-  },
-  logo: {
-    width: "40px",
-    height: "40px",
-  },
-  companyName: {
-    fontSize: "20px",
-    fontWeight: "600",
-    color: "#1d4ed8",
-    margin: 0,
-  },
-  menu: {
-    display: "flex",
-    alignItems: "center",
-    gap: "20px",
-    listStyle: "none",
-  },
-};
 
 export default Navbar;

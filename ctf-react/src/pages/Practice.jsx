@@ -11,10 +11,16 @@ function Practice() {
       <p>Select a practice area</p>
 
       <div className="practice-grid">
-        <div className="practice-card">
+        <div className="practice-card"> 
           <h2>Penetration Testing</h2>
           <p>Hands-on penetration testing practice</p>
-          <button onClick={() => navigate("/practice/badges")}>
+          <button
+            onClick={() =>
+              navigate("/practice/enroll", {
+                state: { target: "/practice/badges", workshopType: "Penetration Testing" },
+              })
+            }
+          >
             Start Practice
           </button>
         </div>
@@ -22,7 +28,13 @@ function Practice() {
         <div className="practice-card">
           <h2>Capture The Flag (CTF)</h2>
           <p>Solve CTF challenges</p>
-          <button onClick={() => navigate("/practice/badges")}>
+          <button
+            onClick={() =>
+              navigate("/practice/enroll", {
+                state: { target: "/practice/ctf", workshopType: "Capture The Flag (CTF)" },
+              })
+            }
+          >
             Start Practice
           </button>
         </div>

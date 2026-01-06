@@ -12,6 +12,9 @@ import Practice from "./pages/Practice";
 import Badges from "./pages/Badges";
 import Introduction from "./pages/Introduction";
 import Topic from "./pages/Topic";
+import CTF from "./pages/CTF";
+import EnrollPage from "./pages/EnrollPage";
+import CTFIntroduction from "./pages/CTFIntroduction";
 import ApplicationResult from "./pages/ApplicationResult";
 import WorkshopCurriculum from "./pages/WorkshopCurriculum"; // ✅ NEW
 
@@ -39,6 +42,7 @@ function App() {
 
           {/* Practice Flow */}
           <Route path="/practice" element={<Practice />} />
+          <Route path="/practice/enroll" element={<EnrollPage />} />
           <Route path="/practice/badges" element={<Badges />} />
 
           {/* Badge Topics */}
@@ -54,15 +58,15 @@ function App() {
           <Route path="/practice/green" element={<Topic title="Green" />} />
           <Route path="/practice/orange" element={<Topic title="Orange" />} />
           <Route path="/practice/intercept" element={<Topic title="Intercept" />} />
+          
           <Route
             path="/practice/auth"
             element={<Topic title="Authentication / Authorization" />}
           />
           <Route path="/practice/android" element={<Topic title="Android" />} />
-          <Route
-            path="/practice/ctf"
-            element={<Topic title="Capture The Flag" />}
-          />
+          <Route path="/practice/ctf" element={<CTF />} />
+          <Route path="/practice/ctf/introduction" element={<CTFIntroduction />} />
+          <Route path="/practice/ctf/:challenge" element={<Topic />} />
 
           <Route
             path="/application-result"
