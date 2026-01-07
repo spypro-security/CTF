@@ -12,6 +12,14 @@ import Practice from "./pages/Practice";
 import Badges from "./pages/Badges";
 import Introduction from "./pages/Introduction";
 import Topic from "./pages/Topic";
+import Unix from "./pages/Unix";
+import Essential from "./pages/Essential";
+import Pcap from "./pages/Pcap";
+import Http from "./pages/Http";
+import Serialize from "./pages/Serialize";
+import Intercept from "./pages/Intercept";
+import Auth from "./pages/Auth";
+import Android from "./pages/Android";
 import CTF from "./pages/CTF";
 import EnrollPage from "./pages/EnrollPage";
 import CTFIntroduction from "./pages/CTFIntroduction";
@@ -47,23 +55,23 @@ function App() {
 
           {/* Badge Topics */}
           <Route path="/practice/introduction" element={<Introduction />} />
-          <Route path="/practice/unix" element={<Topic title="Unix" />} />
-          <Route path="/practice/essential" element={<Topic title="Essential" />} />
-          <Route path="/practice/pcap" element={<Topic title="PCAP Badge" />} />
-          <Route path="/practice/http" element={<Topic title="HTTP" />} />
+          <Route path="/practice/unix" element={<Unix />} />
+          <Route path="/practice/essential" element={<Essential />} />
+          <Route path="/practice/pcap" element={<Pcap />} />
+          <Route path="/practice/http" element={<Http />} />
           <Route path="/practice/white" element={<Topic title="White" />} />
-          <Route path="/practice/serialize" element={<Topic title="Serialize" />} />
+          <Route path="/practice/serialize" element={<Serialize />} />
           <Route path="/practice/yellow" element={<Topic title="Yellow" />} />
           <Route path="/practice/blue" element={<Topic title="Blue" />} />
           <Route path="/practice/green" element={<Topic title="Green" />} />
           <Route path="/practice/orange" element={<Topic title="Orange" />} />
-          <Route path="/practice/intercept" element={<Topic title="Intercept" />} />
+          <Route path="/practice/intercept" element={<Intercept />} />
           
           <Route
             path="/practice/auth"
-            element={<Topic title="Authentication / Authorization" />}
+            element={<Auth />}
           />
-          <Route path="/practice/android" element={<Topic title="Android" />} />
+          <Route path="/practice/android" element={<Android />} />
           <Route path="/practice/ctf" element={<CTF />} />
           <Route path="/practice/ctf/introduction" element={<CTFIntroduction />} />
           <Route path="/practice/ctf/:challenge" element={<Topic />} />
