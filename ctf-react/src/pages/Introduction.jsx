@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 
 const EXPECTED = {
   ch1: "flag{hidden_in_comments}",
@@ -152,6 +153,9 @@ const styles = {
 };
 
 function Introduction() {
+  const location = useLocation();
+  const level = location.state?.level || "Beginner";
+  
   const [answers, setAnswers] = useState({ ch1: "", ch2: "", ch3: "" });
   const [results, setResults] = useState({ ch1: null, ch2: null, ch3: null });
   const [showHints, setShowHints] = useState({ ch1: false, ch2: false, ch3: false });
@@ -170,20 +174,26 @@ function Introduction() {
 
   return (
     <div style={styles.container}>
-      <h1 style={styles.title}>Introduction</h1>
+      <h1 style={styles.title}>Introduction - {level}</h1>
       <p style={styles.subtitle}>
-        Welcome to the practice introduction. Select a topic from the sidebar to begin. Below are three simple penetration-testing style questions to try.
+        Welcome to the {level.toLowerCase()} level practice introduction. Select a topic from the sidebar to begin. Below are challenges for the {level.toLowerCase()} level.
       </p>
 
       <div style={styles.welcomeBox}>
-        <h2 style={styles.welcomeTitle}>🎯 Welcome to Neon Corp CTF</h2>
+        <h2 style={styles.welcomeTitle}>🎯 Welcome to Neon Corp CTF - {level} Level</h2>
         <p style={styles.welcomeText}>
-          Get started with these beginner-friendly challenges. Learn to find hidden information, decode encoded data, and analyze logs for security vulnerabilities. Each challenge builds essential penetration testing skills.
+          {level === "Beginner" 
+            ? "Get started with these beginner-friendly challenges. Learn to find hidden information, decode encoded data, and analyze logs for security vulnerabilities. Each challenge builds essential penetration testing skills."
+            : level === "Intermediate"
+            ? "Take your skills to the next level with intermediate challenges that require deeper understanding and more complex techniques."
+            : "Master advanced techniques with expert-level challenges that test your comprehensive security knowledge and problem-solving abilities."
+          }
         </p>
       </div>
 
-      <div>
-        <section style={styles.challenge}>
+      {level === "Beginner" ? (
+        <div>
+          <section style={styles.challenge}>
           <h3 style={styles.challengeTitle}>CHALLENGE 1: Hidden in Comments</h3>
           <div style={styles.meta}>Source: ch1_note.txt</div>
           
@@ -360,7 +370,18 @@ flag{hidden_in_comments}
             </p>
           </div>
         </section>
-      </div>
+        </div>
+      ) : level === "Intermediate" ? (
+        <div style={{background: '#f3f4f6', padding: '20px', borderRadius: '8px', textAlign: 'center'}}>
+          <h3>Intermediate Challenges Coming Soon</h3>
+          <p>Intermediate-level challenges for this topic are under development.</p>
+        </div>
+      ) : (
+        <div style={{background: '#f3f4f6', padding: '20px', borderRadius: '8px', textAlign: 'center'}}>
+          <h3>Advanced Challenges Coming Soon</h3>
+          <p>Advanced-level challenges for this topic are under development.</p>
+        </div>
+      )}
     </div>
   );
 }

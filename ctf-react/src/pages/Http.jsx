@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 
 const EXPECTED = { 
   ch1: "flag{http_comment_leak}", 
@@ -136,6 +137,9 @@ const styles = {
 };
 
 function Http() {
+  const location = useLocation();
+  const level = location.state?.level || "Beginner";
+  
   const [answers, setAnswers] = useState({ ch1: "", ch2: "", ch3: "" });
   const [results, setResults] = useState({ ch1: null, ch2: null, ch3: null });
   const [showHints, setShowHints] = useState({ ch1: false, ch2: false, ch3: false });
@@ -146,10 +150,11 @@ function Http() {
 
   return (
     <div style={styles.container}>
-      <h1 style={styles.title}>HTTP - Mini CTF Practice Lab</h1>
-      <p style={styles.subtitle}>HTTP protocol security challenges focusing on information disclosure vulnerabilities.</p>
+      <h1 style={styles.title}>HTTP - {level}</h1>
+      <p style={styles.subtitle}>HTTP protocol security challenges focusing on information disclosure vulnerabilities - {level.toLowerCase()} level.</p>
 
-      <div>
+      {level === "Beginner" ? (
+        <div>
         <section style={styles.challenge}>
           <h3 style={styles.challengeTitle}>CHALLENGE 1: HTTP Header Comment Leak</h3>
           <p style={styles.description}>A web server claims that its HTTP response does not expose any sensitive information. However, developers sometimes leave important data inside HTTP comments or debug headers.</p>
@@ -248,7 +253,18 @@ Last known secret: flag{http_debug_exposed}`}</pre>
             )}
           </div>
         </section>
-      </div>
+        </div>
+      ) : level === "Intermediate" ? (
+        <div style={{background: '#f3f4f6', padding: '20px', borderRadius: '8px', textAlign: 'center'}}>
+          <h3>Intermediate Challenges Coming Soon</h3>
+          <p>Intermediate-level HTTP challenges are under development.</p>
+        </div>
+      ) : (
+        <div style={{background: '#f3f4f6', padding: '20px', borderRadius: '8px', textAlign: 'center'}}>
+          <h3>Advanced Challenges Coming Soon</h3>
+          <p>Advanced-level HTTP challenges are under development.</p>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 
 const EXPECTED = { 
   ch1: "PL{192.168.56.103}", 
@@ -137,6 +138,9 @@ const styles = {
 };
 
 function Pcap() {
+  const location = useLocation();
+  const level = location.state?.level || "Beginner";
+  
   const [answers, setAnswers] = useState({ ch1: "", ch2: "", ch3: "", ch4: "" });
   const [results, setResults] = useState({ ch1: null, ch2: null, ch3: null, ch4: null });
   const [showHints, setShowHints] = useState({ ch1: false, ch2: false, ch3: false, ch4: false });
@@ -147,11 +151,12 @@ function Pcap() {
 
   return (
     <div style={styles.container}>
-      <h1 style={styles.title}>PCAP Badge - Medium Level</h1>
-      <p style={styles.subtitle}>Network security incident analysis challenges using Wireshark.</p>
+      <h1 style={styles.title}>PCAP Badge - {level}</h1>
+      <p style={styles.subtitle}>Network security incident analysis challenges using Wireshark - {level.toLowerCase()} level.</p>
 
-      <div>
-        <section style={styles.challenge}>
+      {level === "Beginner" ? (
+        <div>
+          <section style={styles.challenge}>
           <h3 style={styles.challengeTitle}>CHALLENGE 1: First Compromised Host</h3>
           <p style={styles.description}>During a network security incident, multiple internal hosts generated traffic. Analyze the PCAP to determine which internal IP address initiated suspicious communication earliest in the timeline.</p>
           <div style={styles.meta}>Source: PentesterLab - PCAP Badge (Traffic Timeline Analysis)</div>
@@ -263,7 +268,18 @@ function Pcap() {
             )}
           </div>
         </section>
-      </div>
+        </div>
+      ) : level === "Intermediate" ? (
+        <div style={{background: '#f3f4f6', padding: '20px', borderRadius: '8px', textAlign: 'center'}}>
+          <h3>Intermediate Challenges Coming Soon</h3>
+          <p>Intermediate-level PCAP challenges are under development.</p>
+        </div>
+      ) : (
+        <div style={{background: '#f3f4f6', padding: '20px', borderRadius: '8px', textAlign: 'center'}}>
+          <h3>Advanced Challenges Coming Soon</h3>
+          <p>Advanced-level PCAP challenges are under development.</p>
+        </div>
+      )}
     </div>
   );
 }

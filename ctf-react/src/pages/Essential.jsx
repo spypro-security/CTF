@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 
 const EXPECTED = { 
   ch1: "flag{hidden_in_comments}", 
@@ -168,6 +169,9 @@ const styles = {
 };
 
 function Essential() {
+  const location = useLocation();
+  const level = location.state?.level || "Beginner";
+  
   const [answers, setAnswers] = useState({ ch1: "", ch2: "", ch3: "" });
   const [results, setResults] = useState({ ch1: null, ch2: null, ch3: null });
   const [showHints, setShowHints] = useState({ ch1: false, ch2: false, ch3: false });
@@ -178,10 +182,12 @@ function Essential() {
 
   return (
     <div style={styles.container}>
-      <h1 style={styles.title}>Essential Concepts - Mini CTF Practice</h1>
-      <p style={styles.subtitle}>Understand essential cybersecurity concepts through simple Capture The Flag challenges.</p>
+      <h1 style={styles.title}>Essential Concepts - {level}</h1>
+      <p style={styles.subtitle}>Understand essential cybersecurity concepts through {level.toLowerCase()} level Capture The Flag challenges.</p>
 
-      <div style={styles.conceptsBox}>
+      {level === "Beginner" ? (
+        <div>
+          <div style={styles.conceptsBox}>
         <h3 style={styles.conceptTitle}>🎯 Essential Concepts Covered</h3>
         <ul style={styles.conceptList}>
           <li><strong>Information Disclosure</strong> - Sensitive data may be hidden inside comments, unused code, or metadata</li>
@@ -334,7 +340,18 @@ const config = {
             </p>
           </div>
         </section>
-      </div>
+        </div>
+      ) : level === "Intermediate" ? (
+        <div style={{background: '#f3f4f6', padding: '20px', borderRadius: '8px', textAlign: 'center'}}>
+          <h3>Intermediate Challenges Coming Soon</h3>
+          <p>Intermediate-level Essential challenges are under development.</p>
+        </div>
+      ) : (
+        <div style={{background: '#f3f4f6', padding: '20px', borderRadius: '8px', textAlign: 'center'}}>
+          <h3>Advanced Challenges Coming Soon</h3>
+          <p>Advanced-level Essential challenges are under development.</p>
+        </div>
+      )}
     </div>
   );
 }

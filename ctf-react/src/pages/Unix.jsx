@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 import "./ctf.css";
 
 const EXPECTED = {
@@ -8,6 +9,9 @@ const EXPECTED = {
 };
 
 function Unix() {
+  const location = useLocation();
+  const level = location.state?.level || "Beginner";
+  
   const [answers, setAnswers] = useState({ ch1: "", ch2: "", ch3: "" });
   const [results, setResults] = useState({ ch1: null, ch2: null, ch3: null });
 
@@ -23,11 +27,12 @@ function Unix() {
 
   return (
     <div className="ctf-container">
-      <h1 className="ctf-title">Unix</h1>
-      <p className="ctf-subtitle">Unix fundamentals practice. Replace the placeholders below with real challenges.</p>
+      <h1 className="ctf-title">Unix - {level}</h1>
+      <p className="ctf-subtitle">Unix fundamentals practice - {level.toLowerCase()} level. {level === "Beginner" ? "Replace the placeholders below with real challenges." : "Advanced Unix challenges coming soon."}</p>
 
-      <div className="ctf-list">
-        <section className="ctf-challenge">
+      {level === "Beginner" ? (
+        <div className="ctf-list">
+          <section className="ctf-challenge">
           <h3>CHALLENGE 1</h3>
           <div className="ctf-meta">Source: ch1_unix.txt</div>
           <pre className="ctf-code">{`# Example: list files and find hidden flag
@@ -120,7 +125,18 @@ ls -la`}</pre>
             )}
           </div>
         </section>
-      </div>
+        </div>
+      ) : level === "Intermediate" ? (
+        <div style={{background: '#f3f4f6', padding: '20px', borderRadius: '8px', textAlign: 'center'}}>
+          <h3>Intermediate Challenges Coming Soon</h3>
+          <p>Intermediate-level Unix challenges are under development.</p>
+        </div>
+      ) : (
+        <div style={{background: '#f3f4f6', padding: '20px', borderRadius: '8px', textAlign: 'center'}}>
+          <h3>Advanced Challenges Coming Soon</h3>
+          <p>Advanced-level Unix challenges are under development.</p>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,9 +1,13 @@
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 import "./ctf.css";
 
 const EXPECTED = { ch1: "flag{serialize_1}", ch2: "flag{serialize_2}", ch3: "flag{serialize_3}" };
 
 function Serialize() {
+  const location = useLocation();
+  const level = location.state?.level || "Beginner";
+  
   const [answers, setAnswers] = useState({ ch1: "", ch2: "", ch3: "" });
   const [results, setResults] = useState({ ch1: null, ch2: null, ch3: null });
 
@@ -12,11 +16,12 @@ function Serialize() {
 
   return (
     <div className="ctf-container">
-      <h1 className="ctf-title">Serialize</h1>
-      <p className="ctf-subtitle">Serialization-based challenges (e.g. deserialization). Replace content below.</p>
+      <h1 className="ctf-title">Serialize - {level}</h1>
+      <p className="ctf-subtitle">Serialization-based challenges - {level.toLowerCase()} level. {level === "Beginner" ? "Replace content below." : "Advanced challenges coming soon."}</p>
 
-      <div className="ctf-list">
-        <section className="ctf-challenge">
+      {level === "Beginner" ? (
+        <div className="ctf-list">
+          <section className="ctf-challenge">
           <h3>CHALLENGE 1</h3>
           <div className="ctf-meta">Source: obj.bin</div>
           <pre className="ctf-code">{`# Placeholder content`}</pre>
@@ -60,7 +65,18 @@ function Serialize() {
             )}
           </div>
         </section>
-      </div>
+        </div>
+      ) : level === "Intermediate" ? (
+        <div style={{background: '#f3f4f6', padding: '20px', borderRadius: '8px', textAlign: 'center'}}>
+          <h3>Intermediate Challenges Coming Soon</h3>
+          <p>Intermediate-level Serialize challenges are under development.</p>
+        </div>
+      ) : (
+        <div style={{background: '#f3f4f6', padding: '20px', borderRadius: '8px', textAlign: 'center'}}>
+          <h3>Advanced Challenges Coming Soon</h3>
+          <p>Advanced-level Serialize challenges are under development.</p>
+        </div>
+      )}
     </div>
   );
 }
