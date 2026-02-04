@@ -341,6 +341,7 @@ const config = {
           </div>
         </section>
         </div>
+        </div>
       ) : level === "Intermediate" ? (
         <div style={{background: '#f3f4f6', padding: '20px', borderRadius: '8px', textAlign: 'center'}}>
           <h3>Intermediate Challenges Coming Soon</h3>

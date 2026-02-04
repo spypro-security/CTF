@@ -849,7 +849,7 @@ function InternshipDetail({ internship, onBack, allInternships, onSelectInternsh
                   <div className="hero-stats">
                     <div className="stat-box">
                       <div className="stat-label">Duration</div>
-                      <div className="stat-value">{internship.duration}</div>
+                      <div className="stat-value" style={{ whiteSpace: 'pre-wrap' }}>{internship.duration}</div>
                     </div>
                     <div className="stat-box">
                       <div className="stat-label">Mode</div>
