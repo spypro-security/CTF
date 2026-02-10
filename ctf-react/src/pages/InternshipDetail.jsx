@@ -4,9 +4,8 @@ import { useNavigate } from "react-router-dom";
 function InternshipDetail({ internship, onBack, allInternships, onSelectInternship }) {
   const [showForm, setShowForm] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-  const [showAlreadyAppliedMessage, setShowAlreadyAppliedMessage] = useState(false);
-  const [appliedDate, setAppliedDate] = useState("");
+  const [showCurriculum, setShowCurriculum] = useState(false);
+  const [selectedCurriculumPath, setSelectedCurriculumPath] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -53,6 +52,17 @@ function InternshipDetail({ internship, onBack, allInternships, onSelectInternsh
     }));
   };
 
+  const handleCurriculumClick = (e, path) => {
+    e.preventDefault();
+    setSelectedCurriculumPath(path);
+    setShowCurriculum(true);
+  };
+
+  const handleCloseCurriculum = () => {
+    setShowCurriculum(false);
+    setSelectedCurriculumPath("");
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -76,7 +86,6 @@ function InternshipDetail({ internship, onBack, allInternships, onSelectInternsh
       });
       
       const data = await response.json();
-      console.log('Backend Response:', data);
       
       if (response.ok && data.success) {
         setFormData({
@@ -91,13 +100,12 @@ function InternshipDetail({ internship, onBack, allInternships, onSelectInternsh
         const fileInput = document.querySelector('input[type="file"]');
         if (fileInput) fileInput.value = '';
 
-        const resultState = {
+        navigate('/application-result', { state: {
           status: "success",
           email: formData.email,
           internship: internship.title,
           application: data.application || null
-        };
-        navigate('/application-result', { state: resultState });
+        }});
         return;
       } else if (data.already_applied) {
         const dateObj = new Date(data.application_date);
@@ -106,14 +114,13 @@ function InternshipDetail({ internship, onBack, allInternships, onSelectInternsh
           month: 'long',
           day: 'numeric'
         });
-        const resultState = {
+        navigate('/application-result', { state: {
           status: 'already',
           email: formData.email,
           internship: internship.title,
           appliedDate: formattedDate,
           application: data.application || null
-        };
-        navigate('/application-result', { state: resultState });
+        }});
         return;
       } else {
         let errorMessage = "Failed to submit application:\n\n";
@@ -138,39 +145,124 @@ function InternshipDetail({ internship, onBack, allInternships, onSelectInternsh
     }
   };
 
+  // If curriculum is being viewed, show the PDF viewer with back button
+  if (showCurriculum) {
+    return (
+      <>
+        <style>{`
+          .curriculum-viewer-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #1e293b;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+          }
+
+          .curriculum-header {
+            background: #0f172a;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #334155;
+          }
+
+          .curriculum-back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: #667eea;
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+          }
+
+          .curriculum-back-btn:hover {
+            background: #764ba2;
+            transform: translateX(-4px);
+          }
+
+          .curriculum-title {
+            color: #fff;
+            font-size: 18px;
+            font-weight: 600;
+          }
+
+          .curriculum-content {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+          }
+
+          .curriculum-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+          }
+
+          @media (max-width: 768px) {
+            .curriculum-header {
+              padding: 12px 16px;
+            }
+            
+            .curriculum-title {
+              font-size: 14px;
+            }
+            
+            .curriculum-back-btn {
+              padding: 8px 16px;
+              font-size: 13px;
+            }
+          }
+        `}</style>
+
+        <div className="curriculum-viewer-wrapper">
+          <div className="curriculum-header">
+            <button className="curriculum-back-btn" onClick={handleCloseCurriculum}>
+              <span>←</span>
+              <span>Back to Internship Details</span>
+            </button>
+            <div className="curriculum-title">
+              {internship.title} - Curriculum
+            </div>
+          </div>
+          <div className="curriculum-content">
+            <iframe 
+              src={selectedCurriculumPath}
+              className="curriculum-iframe"
+              title="Curriculum PDF"
+            />
+          </div>
+        </div>
+      </>
+    );
+  }
+
   return (
     <>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
         
-        * {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
-        body {
-          font-family: 'Plus Jakarta Sans', sans-serif;
-        }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
         
         @keyframes fadeUp {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
+          from { opacity: 0; transform: translateY(30px); }
+          to { opacity: 1; transform: translateY(0); }
         }
         
         @keyframes spin {
           to { transform: rotate(360deg); }
-        }
-        
-        @keyframes bounce {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-10px); }
         }
         
         .page-wrapper {
@@ -184,9 +276,9 @@ function InternshipDetail({ internship, onBack, allInternships, onSelectInternsh
           position: fixed;
           inset: 0;
           background-image: 
-            radial-gradient(circle at 20% 30%, rgba(255, 107, 107, 0.08) 0%, transparent 50%),
-            radial-gradient(circle at 80% 70%, rgba(78, 205, 196, 0.08) 0%, transparent 50%),
-            radial-gradient(circle at 50% 50%, rgba(255, 195, 113, 0.05) 0%, transparent 50%);
+            radial-gradient(circle at 20% 30%, rgba(102, 126, 234, 0.08) 0%, transparent 50%),
+            radial-gradient(circle at 80% 70%, rgba(118, 75, 162, 0.08) 0%, transparent 50%),
+            radial-gradient(circle at 50% 50%, rgba(255, 107, 107, 0.05) 0%, transparent 50%);
           pointer-events: none;
         }
         
@@ -227,9 +319,9 @@ function InternshipDetail({ internship, onBack, allInternships, onSelectInternsh
         
         .back-nav:hover {
           background: #fff;
-          border-color: #ff6b6b;
+          border-color: #667eea;
           transform: translateX(-4px);
-          box-shadow: 0 4px 12px rgba(255, 107, 107, 0.15);
+          box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
         }
         
         .main-grid {
@@ -240,7 +332,7 @@ function InternshipDetail({ internship, onBack, allInternships, onSelectInternsh
         }
         
         .hero-section {
-          background: linear-gradient(135deg, #ff6b6b 0%, #ffa500 100%);
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
           border-radius: 24px;
           padding: 48px;
           position: relative;
@@ -255,10 +347,7 @@ function InternshipDetail({ internship, onBack, allInternships, onSelectInternsh
           opacity: 0.5;
         }
         
-        .hero-content {
-          position: relative;
-          z-index: 1;
-        }
+        .hero-content { position: relative; z-index: 1; }
         
         .hero-top {
           display: flex;
@@ -268,8 +357,7 @@ function InternshipDetail({ internship, onBack, allInternships, onSelectInternsh
         }
         
         .hero-icon {
-          width: 90px;
-          height: 90px;
+          width: 90px; height: 90px;
           background: rgba(255, 255, 255, 0.25);
           backdrop-filter: blur(10px);
           border-radius: 20px;
@@ -281,8 +369,7 @@ function InternshipDetail({ internship, onBack, allInternships, onSelectInternsh
         }
         
         .hero-icon img {
-          width: 50px;
-          height: 50px;
+          width: 50px; height: 50px;
           object-fit: contain;
         }
         
@@ -303,7 +390,7 @@ function InternshipDetail({ internship, onBack, allInternships, onSelectInternsh
         
         .hero-stats {
           display: grid;
-          grid-template-columns: repeat(3, 1fr);
+          grid-template-columns: repeat(4, 1fr);
           gap: 16px;
         }
         
@@ -330,6 +417,41 @@ function InternshipDetail({ internship, onBack, allInternships, onSelectInternsh
           color: #fff;
           font-weight: 700;
         }
+
+        .curriculum-links {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+        }
+
+        .curriculum-button {
+          background: rgba(255, 255, 255, 0.25);
+          backdrop-filter: blur(10px);
+          border: 1px solid rgba(255, 255, 255, 0.3);
+          padding: 8px 16px;
+          border-radius: 10px;
+          color: #fff;
+          font-size: 13px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 6px;
+          text-decoration: none;
+        }
+
+        .curriculum-button:hover {
+          background: rgba(255, 255, 255, 0.35);
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .curriculum-button svg {
+          width: 14px;
+          height: 14px;
+        }
         
         .content-card {
           background: #fff;
@@ -339,13 +461,8 @@ function InternshipDetail({ internship, onBack, allInternships, onSelectInternsh
           box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
         }
         
-        .section-block {
-          margin-bottom: 40px;
-        }
-        
-        .section-block:last-child {
-          margin-bottom: 0;
-        }
+        .section-block { margin-bottom: 40px; }
+        .section-block:last-child { margin-bottom: 0; }
         
         .section-header {
           display: flex;
@@ -358,7 +475,7 @@ function InternshipDetail({ internship, onBack, allInternships, onSelectInternsh
           width: 8px;
           height: 8px;
           border-radius: 50%;
-          background: linear-gradient(135deg, #ff6b6b, #ffa500);
+          background: linear-gradient(135deg, #667eea, #764ba2);
         }
         
         .section-title {
@@ -382,17 +499,17 @@ function InternshipDetail({ internship, onBack, allInternships, onSelectInternsh
         
         .tag-item {
           padding: 10px 20px;
-          background: rgba(255, 107, 107, 0.15);
-          border: 1px solid rgba(255, 107, 107, 0.3);
+          background: rgba(102, 126, 234, 0.15);
+          border: 1px solid rgba(102, 126, 234, 0.3);
           border-radius: 100px;
-          color: #ff6b6b;
+          color: #667eea;
           font-size: 13px;
           font-weight: 600;
           transition: all 0.3s ease;
         }
         
         .tag-item:hover {
-          background: rgba(255, 107, 107, 0.25);
+          background: rgba(102, 126, 234, 0.25);
           transform: translateY(-2px);
         }
         
@@ -432,15 +549,15 @@ function InternshipDetail({ internship, onBack, allInternships, onSelectInternsh
         }
         
         .check-type {
-          background: rgba(78, 205, 196, 0.2);
-          color: #4ecdc4;
-          border: 1px solid rgba(78, 205, 196, 0.3);
+          background: rgba(102, 126, 234, 0.2);
+          color: #667eea;
+          border: 1px solid rgba(102, 126, 234, 0.3);
         }
         
         .arrow-type {
-          background: rgba(255, 195, 113, 0.2);
-          color: #ffc371;
-          border: 1px solid rgba(255, 195, 113, 0.3);
+          background: rgba(118, 75, 162, 0.2);
+          color: #764ba2;
+          border: 1px solid rgba(118, 75, 162, 0.3);
         }
         
         .list-text {
@@ -453,7 +570,7 @@ function InternshipDetail({ internship, onBack, allInternships, onSelectInternsh
         .cta-button {
           width: 100%;
           padding: 18px;
-          background: linear-gradient(135deg, #ff6b6b 0%, #ffa500 100%);
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
           border: none;
           border-radius: 16px;
           color: #fff;
@@ -486,7 +603,7 @@ function InternshipDetail({ internship, onBack, allInternships, onSelectInternsh
         
         .cta-button:hover {
           transform: translateY(-2px);
-          box-shadow: 0 20px 40px rgba(255, 107, 107, 0.4);
+          box-shadow: 0 20px 40px rgba(102, 126, 234, 0.4);
         }
         
         .cta-button span {
@@ -524,9 +641,9 @@ function InternshipDetail({ internship, onBack, allInternships, onSelectInternsh
         
         .sidebar-item:hover {
           background: #fff;
-          border-color: #ff6b6b;
+          border-color: #667eea;
           transform: translateX(-4px);
-          box-shadow: 0 6px 20px rgba(255, 107, 107, 0.15);
+          box-shadow: 0 6px 20px rgba(102, 126, 234, 0.15);
         }
         
         .sidebar-top {
@@ -539,7 +656,7 @@ function InternshipDetail({ internship, onBack, allInternships, onSelectInternsh
         .sidebar-icon {
           width: 48px;
           height: 48px;
-          background: linear-gradient(135deg, #ff6b6b, #ffa500);
+          background: linear-gradient(135deg, #667eea, #764ba2);
           border-radius: 12px;
           display: flex;
           align-items: center;
@@ -575,249 +692,206 @@ function InternshipDetail({ internship, onBack, allInternships, onSelectInternsh
         
         .sidebar-tag {
           padding: 4px 10px;
-          background: rgba(255, 107, 107, 0.1);
-          border: 1px solid rgba(255, 107, 107, 0.2);
+          background: rgba(102, 126, 234, 0.1);
+          border: 1px solid rgba(102, 126, 234, 0.2);
           border-radius: 6px;
-          color: rgba(255, 107, 107, 0.9);
+          color: rgba(102, 126, 234, 0.9);
           font-size: 11px;
           font-weight: 600;
         }
-        
-        /* Replace the form-related styles in your InternshipDetail component with these: */
 
-.modal-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.85);
-  backdrop-filter: blur(8px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-  padding: 24px;
-  animation: fadeUp 0.3s ease-out;
-}
+        .modal-backdrop {
+          position: fixed;
+          inset: 0;
+          background: rgba(0, 0, 0, 0.85);
+          backdrop-filter: blur(8px);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 9999;
+          padding: 24px;
+          animation: fadeUp 0.3s ease-out;
+        }
 
-.modal-box {
-  background: #fff;
-  border: 2px solid #e9ecef;
-  border-radius: 28px;
-  padding: 40px;
-  max-width: 560px;
-  width: 100%;
-  max-height: 90vh;
-  overflow-y: auto;
-  position: relative;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-}
+        .modal-box {
+          background: #fff;
+          border: 2px solid #e9ecef;
+          border-radius: 28px;
+          padding: 40px;
+          max-width: 560px;
+          width: 100%;
+          max-height: 90vh;
+          overflow-y: auto;
+          position: relative;
+          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
 
-.modal-head {
-  margin-bottom: 32px;
-  padding-bottom: 24px;
-  border-bottom: 2px solid #e9ecef;
-}
+        .modal-head {
+          margin-bottom: 32px;
+          padding-bottom: 24px;
+          border-bottom: 2px solid #e9ecef;
+        }
 
-.modal-heading {
-  font-size: 28px;
-  font-weight: 800;
-  color: #212529;
-  margin-bottom: 8px;
-  font-family: 'Space Grotesk', sans-serif;
-}
+        .modal-heading {
+          font-size: 28px;
+          font-weight: 800;
+          color: #212529;
+          margin-bottom: 8px;
+          font-family: 'Space Grotesk', sans-serif;
+        }
 
-.modal-subhead {
-  font-size: 14px;
-  color: #6c757d;
-}
+        .modal-subhead {
+          font-size: 14px;
+          color: #6c757d;
+        }
 
-.form-field {
-  margin-bottom: 20px;
-}
+        .form-field {
+          margin-bottom: 20px;
+        }
 
-.field-label {
-  display: block;
-  font-size: 13px;
-  font-weight: 700;
-  color: #212529; /* Changed from white to dark */
-  margin-bottom: 8px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
+        .field-label {
+          display: block;
+          font-size: 13px;
+          font-weight: 700;
+          color: #212529;
+          margin-bottom: 8px;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
 
-.required-mark {
-  color: #ff6b6b;
-}
+        .required-mark {
+          color: #667eea;
+        }
 
-.field-input, .field-select {
-  width: 100%;
-  padding: 14px 16px;
-  background: #f8f9fa; /* Changed from transparent to light gray */
-  border: 2px solid #e9ecef; /* Changed border */
-  border-radius: 12px;
-  color: #212529; /* Changed from white to dark */
-  font-size: 14px;
-  transition: all 0.3s ease;
-  font-family: 'Plus Jakarta Sans', sans-serif;
-}
+        .field-input, .field-select {
+          width: 100%;
+          padding: 14px 16px;
+          background: #f8f9fa;
+          border: 2px solid #e9ecef;
+          border-radius: 12px;
+          color: #212529;
+          font-size: 14px;
+          transition: all 0.3s ease;
+          font-family: 'Plus Jakarta Sans', sans-serif;
+        }
 
-.field-input:focus, .field-select:focus {
-  outline: none;
-  background: #fff;
-  border-color: #ff6b6b;
-  box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
-}
+        .field-input:focus, .field-select:focus {
+          outline: none;
+          background: #fff;
+          border-color: #667eea;
+          box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
 
-.field-input::placeholder {
-  color: #adb5bd; /* Changed placeholder color */
-}
+        .field-input::placeholder {
+          color: #adb5bd;
+        }
 
-.field-input:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  background: #e9ecef;
-}
+        .field-input:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+          background: #e9ecef;
+        }
 
-.field-select {
-  cursor: pointer;
-}
+        .field-select {
+          cursor: pointer;
+        }
 
-.field-select option {
-  background: #fff;
-  color: #212529;
-}
+        .file-field {
+          width: 100%;
+          padding: 14px 16px;
+          background: #f8f9fa;
+          border: 2px dashed #cbd5e1;
+          border-radius: 12px;
+          color: #64748b;
+          font-size: 13px;
+          cursor: pointer;
+          transition: all 0.3s ease;
+        }
 
-.file-field {
-  width: 100%;
-  padding: 14px 16px;
-  background: #f8f9fa;
-  border: 2px dashed #cbd5e1;
-  border-radius: 12px;
-  color: #64748b;
-  font-size: 13px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
+        .file-field:hover {
+          background: #e9ecef;
+          border-color: #667eea;
+        }
 
-.file-field:hover {
-  background: #e9ecef;
-  border-color: #ff6b6b;
-}
+        .form-actions {
+          display: flex;
+          gap: 12px;
+          margin-top: 28px;
+        }
 
-.form-actions {
-  display: flex;
-  gap: 12px;
-  margin-top: 28px;
-}
+        .btn-cancel {
+          flex: 1;
+          padding: 14px;
+          background: #fff;
+          border: 2px solid #e9ecef;
+          border-radius: 12px;
+          color: #64748b;
+          font-size: 14px;
+          font-weight: 700;
+          cursor: pointer;
+          transition: all 0.3s ease;
+        }
 
-.btn-cancel {
-  flex: 1;
-  padding: 14px;
-  background: #fff;
-  border: 2px solid #e9ecef;
-  border-radius: 12px;
-  color: #64748b;
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
+        .btn-cancel:hover {
+          background: #f8f9fa;
+          border-color: #cbd5e1;
+        }
 
-.btn-cancel:hover {
-  background: #f8f9fa;
-  border-color: #cbd5e1;
-}
+        .btn-submit {
+          flex: 1;
+          padding: 14px;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          border: none;
+          border-radius: 12px;
+          color: #fff;
+          font-size: 14px;
+          font-weight: 700;
+          cursor: pointer;
+          transition: all 0.3s ease;
+        }
 
-.btn-submit {
-  flex: 1;
-  padding: 14px;
-  background: linear-gradient(135deg, #ff6b6b 0%, #ffa500 100%);
-  border: none;
-  border-radius: 12px;
-  color: #fff;
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
+        .btn-submit:hover:not(:disabled) {
+          transform: translateY(-2px);
+          box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
 
-.btn-submit:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 30px rgba(255, 107, 107, 0.4);
-}
+        .btn-submit:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
 
-.btn-submit:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
+        .load-spin {
+          display: inline-block;
+          width: 14px;
+          height: 14px;
+          border: 2px solid rgba(255, 255, 255, 0.3);
+          border-top-color: #fff;
+          border-radius: 50%;
+          animation: spin 0.8s linear infinite;
+          margin-left: 8px;
+        }
 
-.load-spin {
-  display: inline-block;
-  width: 14px;
-  height: 14px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-top-color: #fff;
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-  margin-left: 8px;
-}
         @media (max-width: 1200px) {
-          .main-grid {
-            grid-template-columns: 1fr;
-          }
-          
-          .sidebar-cards {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-          }
+          .main-grid { grid-template-columns: 1fr; }
+          .sidebar-cards { display: grid; grid-template-columns: repeat(2, 1fr); }
+          .hero-stats { grid-template-columns: repeat(2, 1fr); }
         }
         
         @media (max-width: 768px) {
-          .content-wrapper {
-            padding: 24px 16px;
-          }
-          
-          .hero-section {
-            padding: 32px 24px;
-          }
-          
-          .hero-top {
-            flex-direction: column;
-            text-align: center;
-          }
-          
-          .hero-text h1 {
-            font-size: 32px;
-          }
-          
-          .hero-stats {
-            grid-template-columns: 1fr;
-          }
-          
-          .content-card {
-            padding: 28px;
-          }
-          
-          .sidebar-cards {
-            grid-template-columns: 1fr;
-          }
-          
-          .modal-box {
-            padding: 28px;
-          }
-          
-          .form-actions {
-            flex-direction: column;
-          }
+          .content-wrapper { padding: 24px 16px; }
+          .hero-section { padding: 32px 24px; }
+          .hero-top { flex-direction: column; text-align: center; }
+          .hero-text h1 { font-size: 32px; }
+          .hero-stats { grid-template-columns: 1fr; }
+          .content-card { padding: 28px; }
+          .sidebar-cards { grid-template-columns: 1fr; }
+          .modal-box { padding: 28px; }
+          .form-actions { flex-direction: column; }
         }
         
         @media (max-width: 480px) {
-          .hero-text h1 {
-            font-size: 26px;
-          }
-          
-          .modal-heading {
-            font-size: 22px;
-          }
+          .hero-text h1 { font-size: 26px; }
+          .modal-heading { font-size: 22px; }
         }
       `}</style>
       
@@ -858,6 +932,29 @@ function InternshipDetail({ internship, onBack, allInternships, onSelectInternsh
                     <div className="stat-box">
                       <div className="stat-label">Stipend</div>
                       <div className="stat-value">{internship.stipend}</div>
+                    </div>
+                    <div className="stat-box">
+                      <div className="stat-label">Curriculum</div>
+                      <div className="curriculum-links">
+                        <button 
+                          onClick={(e) => handleCurriculumClick(e, internship.curriculum.threeMonth)}
+                          className="curriculum-button"
+                        >
+                          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                          </svg>
+                          3 Months
+                        </button>
+                        <button 
+                          onClick={(e) => handleCurriculumClick(e, internship.curriculum.sixMonth)}
+                          className="curriculum-button"
+                        >
+                          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                          </svg>
+                          6 Months
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -961,73 +1058,35 @@ function InternshipDetail({ internship, onBack, allInternships, onSelectInternsh
                 <label className="field-label">
                   Full Name <span className="required-mark">*</span>
                 </label>
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  className="field-input"
-                  placeholder="Enter your full name"
-                  required
-                />
+                <input type="text" name="name" value={formData.name} onChange={handleInputChange} className="field-input" placeholder="Enter your full name" required />
               </div>
 
               <div className="form-field">
                 <label className="field-label">
                   Email Address <span className="required-mark">*</span>
                 </label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  className="field-input"
-                  placeholder="your.email@example.com"
-                  required
-                />
+                <input type="email" name="email" value={formData.email} onChange={handleInputChange} className="field-input" placeholder="your.email@example.com" required />
               </div>
 
               <div className="form-field">
                 <label className="field-label">
                   Phone Number <span className="required-mark">*</span>
                 </label>
-                <input
-                  type="tel"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleInputChange}
-                  className="field-input"
-                  placeholder="+91 1234567890"
-                  required
-                />
+                <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} className="field-input" placeholder="+91 1234567890" required />
               </div>
 
               <div className="form-field">
                 <label className="field-label">
                   College Name <span className="required-mark">*</span>
                 </label>
-                <input
-                  type="text"
-                  name="collegeName"
-                  value={formData.collegeName}
-                  onChange={handleInputChange}
-                  className="field-input"
-                  placeholder="Enter your college name"
-                  required
-                />
+                <input type="text" name="collegeName" value={formData.collegeName} onChange={handleInputChange} className="field-input" placeholder="Enter your college name" required />
               </div>
 
               <div className="form-field">
                 <label className="field-label">
                   Year of Passing <span className="required-mark">*</span>
                 </label>
-                <select
-                  name="passedOutYear"
-                  value={formData.passedOutYear}
-                  onChange={handleInputChange}
-                  className="field-select"
-                  required
-                >
+                <select name="passedOutYear" value={formData.passedOutYear} onChange={handleInputChange} className="field-select" required>
                   <option value="">Select year</option>
                   <option value="2025">2025</option>
                   <option value="2026">2026</option>
@@ -1042,50 +1101,23 @@ function InternshipDetail({ internship, onBack, allInternships, onSelectInternsh
                 <label className="field-label">
                   Domain Interested <span className="required-mark">*</span>
                 </label>
-                <input
-                  type="text"
-                  name="domain"
-                  value={formData.domain}
-                  readOnly
-                  disabled
-                  className="field-input"
-                  placeholder="e.g., Python Development"
-                  required
-                />
+                <input type="text" name="domain" value={formData.domain} readOnly disabled className="field-input" required />
               </div>
 
               <div className="form-field">
                 <label className="field-label">
                   Upload Resume (Optional)
                 </label>
-                <input
-                  type="file"
-                  name="resume"
-                  onChange={handleFileChange}
-                  className="file-field"
-                  accept=".pdf,.doc,.docx"
-                />
+                <input type="file" name="resume" onChange={handleFileChange} className="file-field" accept=".pdf,.doc,.docx" />
               </div>
 
               <div className="form-actions">
-                <button
-                  type="button"
-                  className="btn-cancel"
-                  onClick={() => setShowForm(false)}
-                  disabled={isSubmitting}
-                >
+                <button type="button" className="btn-cancel" onClick={() => setShowForm(false)} disabled={isSubmitting}>
                   Cancel
                 </button>
-                <button
-                  type="submit"
-                  className="btn-submit"
-                  disabled={isSubmitting}
-                >
+                <button type="submit" className="btn-submit" disabled={isSubmitting}>
                   {isSubmitting ? (
-                    <>
-                      Submitting...
-                      <span className="load-spin"></span>
-                    </>
+                    <>Submitting...<span className="load-spin"></span></>
                   ) : (
                     'Submit Application'
                   )}

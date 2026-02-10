@@ -18,15 +18,16 @@ function JobDetail() {
   const jobsData = [
     {
       id: 1,
-      title: "Frontend Developer",
-      company: "Tech Solutions Pvt. Ltd.",
+      title: " Java Full Stack  Developer",
+      company: "Spypro Security Solutions Pvt. Ltd.",
       location: "Hyderabad, India",
       type: "Full-Time",
-      skills: ["React", "CSS", "JavaScript"],
+      skills: ["Java", "React", "CSS", "JavaScript", "SQL","Spring Boot"],
       salary: "₹40,000 - ₹60,000",
       image: "https://api.dicebear.com/7.x/shapes/svg?seed=frontend",
       description: "Build modern web applications with React",
-      fullDescription: "Join our innovative team as a Frontend Developer where you'll create cutting-edge web applications using the latest technologies. You'll work on exciting projects that impact millions of users while collaborating with talented designers and backend engineers.",
+      pdfPath: "/JD/java jd.pdf", // Added PDF path
+      fullDescription: "As a Java Full Stack Developer, you will be proficient in building robust and effective web applications using Java and modern frontend technologies. You will work across the complete software development lifecycle, delivering secure, scalable, and high-performance enterprise solutions.",
       responsibilities: [
         "Develop responsive web applications using React.js",
         "Collaborate with UI/UX designers to implement pixel-perfect designs",
@@ -35,7 +36,7 @@ function JobDetail() {
         "Participate in code reviews and mentor junior developers"
       ],
       requirements: [
-        "3+ years of experience in frontend development",
+        "2+ years of experience in backend development with Java",
         "Strong proficiency in React, JavaScript (ES6+), HTML5, CSS3",
         "Experience with state management (Redux, Context API)",
         "Understanding of RESTful APIs and async operations",
@@ -52,14 +53,15 @@ function JobDetail() {
     {
       id: 2,
       title: "Data Scientist",
-      company: "AI Labs",
-      location: "Bangalore, India",
+      company: "Spypro Security Solutions Pvt. Ltd.",
+      location: "Hyderabad, India",
       type: "Internship",
       skills: ["Python", "Pandas", "Machine Learning"],
       salary: "₹25,000 - ₹35,000",
       image: "https://api.dicebear.com/7.x/shapes/svg?seed=data",
       description: "Work on cutting-edge AI and ML projects",
-      fullDescription: "Dive into the world of artificial intelligence and machine learning with our experienced team. This internship offers hands-on experience with real-world datasets, advanced ML algorithms, and the opportunity to contribute to innovative AI solutions.",
+      pdfPath: "/JD/Data Scientist jd.pdf", // Added PDF path
+      fullDescription: "As a Data Scientist, you will be proficient in analyzing complex datasets and developing effective machine learning models. This role emphasizes data-driven decision-making and applying AI techniques to solve real-world business problems.",
       responsibilities: [
         "Analyze complex datasets to extract actionable insights",
         "Build and train machine learning models for various use cases",
@@ -82,42 +84,108 @@ function JobDetail() {
         "Potential for full-time conversion based on performance"
       ]
     },
+    
     {
-      id: 3,
-      title: "Backend Developer",
-      company: "CodeHub",
-      location: "Remote",
+      id: 4,
+      title: "Python Full Stack Developer",
+      company: "Spypro Security Solutions Pvt. Ltd.",
+      location: "Hyderabad, India",
       type: "Full-Time",
-      skills: ["Node.js", "Express", "MongoDB"],
-      salary: "₹45,000 - ₹65,000",
-      image: "https://api.dicebear.com/7.x/shapes/svg?seed=backend",
-      description: "Design scalable server-side applications",
-      fullDescription: "We're seeking a skilled Backend Developer to architect, develop, and maintain robust server-side applications. Work with modern technologies to build scalable systems that power our platform, serving thousands of users daily.",
+      skills: ["Python", "Django", "React", "REST APIs", "PostgreSQL"],
+      salary: "₹40,000 - ₹60,000",
+      image: "https://api.dicebear.com/7.x/shapes/svg?seed=python",
+      description: "Develop scalable full stack applications using Python",
+      pdfPath: "/JD/python jd.pdf", // Added PDF path
+      fullDescription: "As a Python Full Stack Developer, you will be proficient in building efficient, secure, and scalable web applications using Python and modern frontend frameworks. You will work on both backend and frontend components, ensuring effective system performance and seamless user experience.",
       responsibilities: [
-        "Design and implement RESTful APIs and microservices",
-        "Develop server-side logic using Node.js and Express",
-        "Integrate with MongoDB and optimize database queries",
-        "Implement security measures and data protection protocols",
-        "Monitor application performance and troubleshoot issues",
-        "Write comprehensive tests and documentation"
+        "Develop backend services using Python and Django",
+        "Build responsive frontend interfaces using React",
+        "Design and integrate RESTful APIs",
+        "Manage databases and optimize queries",
+        "Ensure application security and performance",
       ],
       requirements: [
-        "4+ years of backend development experience",
-        "Expert-level knowledge of Node.js, Express, and MongoDB",
-        "Strong understanding of database design and optimization",
-        "Experience with version control systems (Git)",
-        "Knowledge of microservices architecture",
-        "Excellent debugging and problem-solving skills"
+        "Strong proficiency in Python and Django framework",
+        "Good knowledge of React and frontend fundamentals",
+        "Experience with REST APIs and database integration",
+        "Effective problem-solving and debugging skills",
+        "Basic understanding of deployment concepts",
       ],
       benefits: [
-        "100% remote work from anywhere",
-        "Competitive compensation package",
-        "Annual performance bonuses",
-        "Learning and development budget",
-        "Work-life balance with flexible hours",
-        "Latest tech stack and modern development tools"
-      ]
+        "Industry-oriented full stack exposure",
+        "Professional growth and skill enhancement",
+        "Supportive development team",
+        "Stable career opportunity",
+      ],
     },
+    {
+      id: 5,
+      title: "Cyber Security Analyst",
+      company: "Spypro Security Solutions Pvt. Ltd.",
+      location: "Hyderabad, India",
+      type: "Full-Time",
+      skills: ["Networking", "Ethical Hacking", "SIEM", "Linux", "Cyber Defense"],
+      salary: "₹30,000 - ₹45,000",
+      image: "https://api.dicebear.com/7.x/shapes/svg?seed=cyber",
+      description: "Protect systems and networks from cyber threats",
+      pdfPath: "/JD/cyber security jd.pdf", // Added PDF path
+      fullDescription: "As a Cyber Security Analyst, you will be proficient in identifying vulnerabilities and implementing effective security measures. This role focuses on safeguarding networks, monitoring threats, and ensuring organizational cyber resilience.",
+      responsibilities: [
+        "Monitor systems and networks for security breaches",
+        "Conduct vulnerability assessments and penetration testing",
+        "Implement effective security controls and policies",
+        "Respond to security incidents and threats",
+        "Maintain security documentation and reports",
+      ],
+      requirements: [
+        "Strong understanding of networking fundamentals",
+        "Knowledge of ethical hacking and cyber security tools",
+        "Experience with Linux and security monitoring systems",
+        "Effective analytical and incident response skills",
+      ],
+      benefits: [
+        "High-demand cyber security career path",
+        "Hands-on exposure to real-world security scenarios",
+        "Continuous learning opportunities",
+        "Professional certification guidance",
+      ],
+    },
+    {
+      id : 6,
+      title: "DevOps Engineer",
+      company: "Spypro Security Solutions Pvt. Ltd.",
+      location: "Hyderabad, India",
+      type: "Full-Time",
+      skills: ["AWS", "Docker", "Kubernetes", "CI/CD", "Infrastructure as Code"],
+      salary: "₹35,000 - ₹50,000",
+      image: "https://api.dicebear.com/7.x/shapes/svg?seed=devops",
+      description: "Streamline development and deployment processes",
+
+
+      pdfPath: "/JD/Devops.jd.pdf", // Added PDF path
+      fullDescription: "As a DevOps Engineer, you will be proficient in automating and optimizing software development and deployment processes. This role emphasizes collaboration between development and operations teams to ensure efficient, reliable, and scalable application delivery.",
+      responsibilities: [
+        "Design and implement CI/CD pipelines",
+        "Manage cloud infrastructure and services",
+        "Automate deployment and configuration management",   
+        "Monitor system performance and troubleshoot issues",
+        "Collaborate with development teams to ensure smooth releases",
+      ],
+      requirements: [
+        "Experience with cloud platforms (AWS, Azure, GCP)",  
+        "Proficiency in containerization (Docker, Kubernetes)",
+        "Knowledge of CI/CD tools (Jenkins, GitLab CI)",  
+        "Understanding of infrastructure as code (Terraform, Ansible)",
+        "Strong problem-solving and communication skills",
+      ],
+      benefits: [
+        "Exposure to cutting-edge DevOps tools and practices",
+        "Opportunities for professional growth and certification",
+        "Collaborative and innovative work environment",
+        "Competitive salary and benefits package",
+      ],  
+        
+    }
   ];
 
   // Find the complete job data
@@ -135,6 +203,23 @@ function JobDetail() {
 
   const handleApplyNow = () => {
     navigate('/job-application', { state: { job: selectedJob } });
+  };
+
+  const handleViewJD = () => {
+    if (selectedJob.pdfPath) {
+      window.open(selectedJob.pdfPath, '_blank');
+    }
+  };
+
+  const handleDownloadJD = () => {
+    if (selectedJob.pdfPath) {
+      const link = document.createElement('a');
+      link.href = selectedJob.pdfPath;
+      link.download = `${selectedJob.title}_JD.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
   };
 
   return (
@@ -253,28 +338,9 @@ function JobDetail() {
         .hero-top {
           display: flex;
           align-items: flex-start;
-          gap: 24px;
-          margin-bottom: 32px;
-        }
-        
-        .hero-icon {
-          width: 90px;
-          height: 90px;
-          background: rgba(255, 255, 255, 0.25);
-          backdrop-filter: blur(10px);
-          border-radius: 20px;
-          display: flex;
-          align-items: center;
           justify-content: center;
-          flex-shrink: 0;
-          border: 2px solid rgba(255, 255, 255, 0.3);
-          overflow: hidden;
-        }
-        
-        .hero-icon img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
+          text-align: center;
+          margin-bottom: 32px;
         }
         
         .hero-text h1 {
@@ -440,6 +506,36 @@ function JobDetail() {
           font-size: 14px;
           line-height: 1.6;
         }
+
+        .jd-buttons-container {
+          display: flex;
+          gap: 12px;
+          margin-bottom: 16px;
+        }
+
+        .jd-button {
+          flex: 1;
+          padding: 14px 20px;
+          background: #fff;
+          border: 2px solid #667eea;
+          border-radius: 12px;
+          color: #667eea;
+          font-size: 14px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+        }
+
+        .jd-button:hover {
+          background: #667eea;
+          color: #fff;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(102, 126, 234, 0.25);
+        }
         
         .cta-button {
           width: 100%;
@@ -452,7 +548,6 @@ function JobDetail() {
           font-weight: 700;
           cursor: pointer;
           transition: all 0.3s ease;
-          margin-top: 32px;
           position: relative;
           overflow: hidden;
         }
@@ -523,26 +618,7 @@ function JobDetail() {
         .sidebar-top {
           display: flex;
           align-items: center;
-          gap: 14px;
           margin-bottom: 12px;
-        }
-        
-        .sidebar-icon {
-          width: 48px;
-          height: 48px;
-          background: linear-gradient(135deg, #667eea, #764ba2);
-          border-radius: 12px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-shrink: 0;
-          overflow: hidden;
-        }
-        
-        .sidebar-icon img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
         }
         
         .sidebar-name {
@@ -596,7 +672,7 @@ function JobDetail() {
           }
           
           .hero-top {
-            flex-direction: column;
+            justify-content: center;
             text-align: center;
           }
           
@@ -615,6 +691,10 @@ function JobDetail() {
           .sidebar-cards {
             grid-template-columns: 1fr;
           }
+
+          .jd-buttons-container {
+            flex-direction: column;
+          }
         }
         
         @media (max-width: 480px) {
@@ -630,7 +710,7 @@ function JobDetail() {
 
         <div className="content-wrapper">
           <button className="back-nav" onClick={handleBackToJobs}>
-            <span></span>
+            <span>←</span>
             <span>Back to All Jobs</span>
           </button>
 
@@ -640,9 +720,6 @@ function JobDetail() {
                 <div className="hero-pattern"></div>
                 <div className="hero-content">
                   <div className="hero-top">
-                    <div className="hero-icon">
-                      <img src={selectedJob.image} alt={selectedJob.title} />
-                    </div>
                     <div className="hero-text">
                       <h1>{selectedJob.title}</h1>
                       <p>{selectedJob.company}</p>
@@ -732,6 +809,20 @@ function JobDetail() {
                   </div>
                 </div>
 
+                {/* JD Buttons Section */}
+                {selectedJob.pdfPath && (
+                  <div className="jd-buttons-container">
+                    <button className="jd-button" onClick={handleViewJD}>
+                      <span>📄</span>
+                      <span>View Job Description</span>
+                    </button>
+                    <button className="jd-button" onClick={handleDownloadJD}>
+                      <span>⬇️</span>
+                      <span>Download JD</span>
+                    </button>
+                  </div>
+                )}
+
                 <button className="cta-button" onClick={handleApplyNow}>
                   <span>Apply for this Position</span>
                 </button>
@@ -748,9 +839,6 @@ function JobDetail() {
                     onClick={() => handleSelectJob(j)}
                   >
                     <div className="sidebar-top">
-                      <div className="sidebar-icon">
-                        <img src={j.image} alt={j.title} />
-                      </div>
                       <div className="sidebar-name">{j.title}</div>
                     </div>
                     <div className="sidebar-desc">{j.description}</div>

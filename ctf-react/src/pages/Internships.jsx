@@ -16,10 +16,14 @@ function Internship() {
       cornerClass: "corner-blue",
       description: "Master Python with real-world projects",
       skills: ["Django", "Flask", "APIs"],
-      fullDescription: "Dive deep into Python development with our comprehensive internship program. You'll work on real-world projects, learn industry best practices, and gain hands-on experience with modern Python frameworks. Build scalable web applications and RESTful APIs.",
+      fullDescription: " Learn Python development through practical training and real-world projects. Work with Django and Flask to build web applications and REST APIs. This internship helps you strengthen backend skills and understand industry-standard coding practices. ",
       duration: "3 months + mini project\n6 months + major project",
       mode: "online / offline ",
       stipend: "₹5,000 - ₹12,000/month",
+      curriculum: {
+        threeMonth: "/3 months/3 pfs.pdf",
+        sixMonth: "/6 months/6 pfs.pdf"
+      },
       requirements: [
         "Basic Python knowledge",
         "Understanding of OOP concepts",
@@ -43,10 +47,14 @@ function Internship() {
       cornerClass: "corner-orange",
       description: "Build full stack apps using Java & React",
       skills: ["Spring Boot", "React", "MySQL"],
-      fullDescription: "Become a full stack developer by mastering both frontend and backend technologies. Work on enterprise-level applications using Java Spring Boot and React. Learn microservices architecture and modern development practices.",
+      fullDescription: " Gain hands-on experience in full stack development using Java and modern frontend technologies. Learn Spring Boot, React, and database integration while building complete web applications used in real-world scenarios.",
       duration: "3 months + mini project\n6 months + major project",
       mode: "online / offline ",
       stipend: "₹5,000 - ₹12,000/month",
+      curriculum: {
+        threeMonth: "/3 months/3 jfs.pdf",
+        sixMonth: "/6 months/6 jsf.pdf"
+      },
       requirements: [
         "Java fundamentals",
         "HTML/CSS/JavaScript basics",
@@ -70,10 +78,14 @@ function Internship() {
       cornerClass: "corner-purple",
       description: "Learn ethical hacking & security tools",
       skills: ["OWASP", "Kali Linux"],
-      fullDescription: "Learn to protect systems and networks from cyber threats. Gain practical experience in penetration testing, vulnerability assessment, and security auditing. Master industry-standard tools and ethical hacking techniques.",
+      fullDescription: " Understand the fundamentals of Cyber Security through practical exposure. Learn how to identify vulnerabilities, perform basic penetration testing, and work with common security tools used in the industry.",
       duration: "3 months + mini project\n6 months + major project",
       mode: "online / offline ",
       stipend: "₹5,000 - ₹12,000",
+      curriculum: {
+        threeMonth: "/3 months/3 cs.pdf",
+        sixMonth: "/6 months/6 cs.pdf"
+      },
       requirements: [
         "Networking basics (TCP/IP, DNS)",
         "Linux fundamentals",
@@ -97,10 +109,14 @@ function Internship() {
       cornerClass: "corner-green",
       description: "Learn AI and Machine Learning concepts",
       skills: ["TensorFlow", "Scikit-learn", "Pandas"],
-      fullDescription: "Explore the world of Artificial Intelligence and Machine Learning. Build predictive models, work with neural networks, and solve real-world problems using AI. Master both supervised and unsupervised learning techniques.",
+      fullDescription: "Learn the core concepts of Artificial Intelligence and Machine Learning with hands-on projects. Build basic ML models, work with real datasets, and understand how AI solutions are applied in real-world problems.",
       duration: "3 months + mini project\n6 months + major project",
       mode: "online / offline ",
       stipend: "₹5,000 - ₹12,000/month",
+      curriculum: {
+        threeMonth: "/3 months/3 ai ml.pdf",
+        sixMonth: "/6 months/6 aiml.pdf"
+      },
       requirements: [
         "Python programming",
         "Mathematics & statistics background",
@@ -124,16 +140,21 @@ function Internship() {
       cornerClass: "corner-yellow",
       description: "Analyze data and build insights",
       skills: ["Python", "Pandas", "Matplotlib", "SQL"],
-      fullDescription: "Transform raw data into actionable insights. Learn data analysis, visualization, and statistical modeling to make data-driven decisions. Work with real business datasets and solve practical problems.",
+      fullDescription: "Learn how to analyze and visualize data using Python tools. This internship focuses on data analysis, basic modeling, and presenting insights from real-world datasets.",
       duration: "3 months + mini project\n6 months + major project",
       mode: "online / offline ",
       stipend: "₹5,000 - ₹12,000/month",
+      curriculum: {
+        threeMonth: "/3 months/3 ds.pdf",
+        sixMonth: "/6 months/6 ds.pdf"
+      },
       requirements: [
         "Basic Python programming",
         "SQL knowledge",
         "Analytical thinking",
         "Statistics fundamentals"
       ],
+      
       learningOutcomes: [
         "Perform exploratory data analysis",
         "Create compelling visualizations",
@@ -151,10 +172,14 @@ function Internship() {
       cornerClass: "corner-pink",
       description: "Create AI-generated content & models",
       skills: ["ChatGPT API", "DALL·E", "Stable Diffusion"],
-      fullDescription: "Work with cutting-edge generative AI technologies. Learn to build applications using large language models, image generation, and other AI tools. Create innovative AI-powered products and solutions.",
+      fullDescription: "Get practical exposure to Generative AI technologies. Learn how to work with AI APIs, build simple AI-powered applications, and understand prompt design and content generation.",
       duration: "3 months + mini project\n6 months + major project",
       mode: "online / offline ",
       stipend: "₹5,000 - ₹12,000 /month",
+      curriculum: {
+        threeMonth: "/3 months/3 genai.pdf",
+        sixMonth: "/6 months/6 genai.pdf"
+      },
       requirements: [
         "Python programming",
         "API integration experience",
@@ -178,10 +203,14 @@ function Internship() {
       cornerClass: "corner-green",
       description: "IoT solutions with Machine Learning",
       skills: ["Arduino", "Python", "TensorFlow", "IoT Protocols"],
-      fullDescription: "Combine Internet of Things with Machine Learning to build intelligent IoT solutions. Learn to collect sensor data, process it with ML models, and create smart connected devices. Build end-to-end IoT ML systems.",
+      fullDescription: "Learn how IoT systems work with Machine Learning. Collect sensor data, apply ML models, and build simple smart device applications with real-time monitoring.",
       duration: "3 months + mini project\n6 months + major project",
       mode: "online / offline ",
       stipend: "₹5,000 - ₹12,000/month",
+      curriculum: {
+        threeMonth: "/3 months/3 iot.pdf",
+        sixMonth: "/6 months/6 iot.pdf"
+      },
       requirements: [
         "Python programming",
         "Basic electronics knowledge",
