@@ -1131,4 +1131,4 @@ function InternshipDetail({ internship, onBack, allInternships, onSelectInternsh
   );
 }
 
-export default InternshipDetail;
+export default InternshipDetail; 
