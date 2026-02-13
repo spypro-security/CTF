@@ -25,7 +25,7 @@ function Intercept() {
             <button className="ctf-submit" onClick={()=>handleSubmit('ch1')} disabled={!answers.ch1.trim()}>Submit</button>
             {results.ch1 !== null && (
               <div className={`ctf-result ${results.ch1 ? "ok" : "bad"}`}>
-                {results.ch1 ? "Correct!" : (<>Incorrect — correct: <span className="ctf-correct-flag">{EXPECTED.ch1}</span></>)}
+                {results.ch1 ? "Correct!" : "Incorrect"}
               </div>
             )}
           </div>
@@ -40,7 +40,7 @@ function Intercept() {
             <button className="ctf-submit" onClick={()=>handleSubmit('ch2')} disabled={!answers.ch2.trim()}>Submit</button>
             {results.ch2 !== null && (
               <div className={`ctf-result ${results.ch2 ? "ok" : "bad"}`}>
-                {results.ch2 ? "Correct!" : (<>Incorrect — correct: <span className="ctf-correct-flag">{EXPECTED.ch2}</span></>)}
+                {results.ch2 ? "Correct!" : "Incorrect"}
               </div>
             )}
           </div>
@@ -55,7 +55,7 @@ function Intercept() {
             <button className="ctf-submit" onClick={()=>handleSubmit('ch3')} disabled={!answers.ch3.trim()}>Submit</button>
             {results.ch3 !== null && (
               <div className={`ctf-result ${results.ch3 ? "ok" : "bad"}`}>
-                {results.ch3 ? "Correct!" : (<>Incorrect — correct: <span className="ctf-correct-flag">{EXPECTED.ch3}</span></>)}
+                {results.ch3 ? "Correct!" : "Incorrect"}
               </div>
             )}
           </div>

@@ -60,21 +60,7 @@ function Badges() {
               <span className="badge-count">{topic.count}</span>
             </div>
           ))
-        ) : (
-          <div className="levels-section">
-            <h4>{selectedTopic.name} Levels</h4>
-            {levels.map((level, index) => (
-              <div
-                key={index}
-                className="level-item"
-                onClick={() => handleLevelClick(level)}
-              >
-                <span>{level.name}</span>
-                <span className="level-description">{level.description}</span>
-              </div>
-            ))}
-          </div>
-        )}
+        ) : null}
       </div>
 
       <div className="badges-content">
@@ -84,6 +70,23 @@ function Badges() {
           <div>
             <h2>{selectedTopic.name}</h2>
             <p>Select a difficulty level to start practicing</p>
+            <div className="levels-cards-grid">
+              {levels.map((level, index) => (
+                <div
+                  key={index}
+                  className={`level-card level-${level.name.toLowerCase()}`}
+                  onClick={() => handleLevelClick(level)}
+                >
+                  <div className="level-card-header">
+                    <h3>{level.name}</h3>
+                  </div>
+                  <p className="level-card-description">{level.description}</p>
+                  <div className="level-card-footer">
+                    <span className="start-btn">Start Challenge →</span>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         )}
       </div>

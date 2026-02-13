@@ -1,8 +1,19 @@
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 
 const EXPECTED = { 
-  ch1: "flag{hardcoded_key_in_strings}", 
-  ch2: "flag{sqlite_database_key}"
+  ch1: "FLAG{GOOGLE_CLOUD}", 
+  ch2: "FLAG{LONG_TERM_EXPOSURE}",
+  ch3: "FLAG{CLOUD_ENVIRONMENT}",
+  ch4: "FLAG{FIRST_BOOT:2026-01-08:00}"
+};
+
+// intermediate-level correct flags
+const EXPECTED_I = {
+  // question1 has no flag
+  ch2: "CTF{assets_are_public}",
+  ch3: "HQX{admin:admin@123",
+  ch4: "CTF{hidden_activity_exposed}"
 };
 
 const styles = {
@@ -159,13 +170,25 @@ const styles = {
 };
 
 function Android() {
-  const [answers, setAnswers] = useState({ ch1: "", ch2: "" });
-  const [results, setResults] = useState({ ch1: null, ch2: null });
-  const [showHints, setShowHints] = useState({ ch1: false, ch2: false });
+  const location = useLocation();
+  const level = location.state?.level || "Beginner";
+
+  const [answers, setAnswers] = useState({ ch1: "", ch2: "", ch3: "", ch4: "" });
+  const [results, setResults] = useState({ ch1: null, ch2: null, ch3: null, ch4: null });
+  const [showHints, setShowHints] = useState({ ch1: false, ch2: false, ch3: false, ch4: false });
+
+  // intermediate state
+  const [answersI, setAnswersI] = useState({ ch2: "", ch3: "", ch4: "" });
+  const [resultsI, setResultsI] = useState({ ch2: null, ch3: null, ch4: null });
+  const [showHintsI, setShowHintsI] = useState({ ch2: false, ch3: false, ch4: false });
 
   const handleChange = (k, v) => setAnswers((s) => ({ ...s, [k]: v }));
   const handleSubmit = (k) => setResults((r) => ({ ...r, [k]: (answers[k] || "").trim() === EXPECTED[k] }));
   const toggleHint = (k) => setShowHints((s) => ({ ...s, [k]: !s[k] }));
+
+  const handleChangeI = (k, v) => setAnswersI((s) => ({ ...s, [k]: v }));
+  const handleSubmitI = (k) => setResultsI((r) => ({ ...r, [k]: (answersI[k] || "").trim() === EXPECTED_I[k] }));
+  const toggleHintI = (k) => setShowHintsI((s) => ({ ...s, [k]: !s[k] }));
 
   return (
     <div style={styles.container}>
@@ -173,122 +196,216 @@ function Android() {
       <p style={styles.subtitle}>Android reverse engineering challenges from PentesterLab - Learn APK analysis and mobile security.</p>
 
       <div>
+        {level === "Beginner" ? (
+        <>
         <section style={styles.challenge}>
-          <h3 style={styles.challengeTitle}>CHALLENGE 1: Extracting Hardcoded Key from APK Resources</h3>
-          <p style={styles.description}>
-            In this challenge, an Android application (Android01.apk) was provided for analysis. The objective is to decompile the APK file and identify a hardcoded key hidden within the application's configuration files. This exercise introduces the basics of Android reverse engineering and demonstrates how sensitive information can be improperly stored in application resources.
-          </p>
-          <div style={styles.meta}>Source: Android01.apk → res/values/strings.xml</div>
-          
-          <div style={styles.toolsList}>
-            <strong>🛠️ Tools Required:</strong> Kali Linux, apktool
-          </div>
-
-          <button style={styles.hintBtn} onClick={() => toggleHint('ch1')}>
-            {showHints.ch1 ? "Hide Methodology" : "Show Methodology"}
-          </button>
-          
-          {showHints.ch1 && (
-            <div style={styles.hint}>
-              <strong>📋 Step-by-Step Methodology:</strong>
-              <ol style={styles.methodologyList}>
-                <li>Download the APK file from PentesterLab</li>
-                <li>Install and verify apktool in Kali Linux</li>
-                <li>Decompile the APK using the command:
-                  <pre style={styles.code}>apktool d Android01.apk</pre>
-                </li>
-                <li>Explore the generated directory to understand the application structure</li>
-                <li>Navigate to the res/values directory</li>
-                <li>Examine the strings.xml file:
-                  <pre style={styles.code}>cat Android01/res/values/strings.xml</pre>
-                </li>
-                <li>Look for hardcoded keys stored in plaintext within the XML file</li>
-              </ol>
-              
-              <div style={styles.securityNote}>
-                <strong>🔐 Security Observation:</strong> Storing sensitive information such as keys in resource files makes Android applications vulnerable to reverse engineering. Such data should be stored securely on the server side or protected using encryption mechanisms.
-              </div>
-            </div>
-          )}
-          
-          <input style={styles.input} placeholder="Enter flag (e.g. flag{...})" value={answers.ch1} onChange={(e)=>handleChange('ch1', e.target.value)} />
+          <h3 style={styles.challengeTitle}>QUESTION 1: Cloud Provider Used</h3>
+          <p style={styles.description}>Task: Identify which cloud provider hosts the Android backend. Tool: Shodan. Hint: AWS / Google / Azure.</p>
+          <input
+            style={styles.input}
+            placeholder="Enter flag (e.g. FLAG{GOOGLE_CLOUD})"
+            value={answers.ch1}
+            onChange={(e) => handleChange('ch1', e.target.value)}
+          />
           <div style={styles.actions}>
-            <button style={answers.ch1.trim() ? styles.submit : styles.submitDisabled} onClick={()=>handleSubmit('ch1')} disabled={!answers.ch1.trim()}>Submit</button>
+            <button
+              style={answers.ch1.trim() ? styles.submit : styles.submitDisabled}
+              onClick={() => handleSubmit('ch1')}
+              disabled={!answers.ch1.trim()}
+            >
+              Submit
+            </button>
             {results.ch1 !== null && (
-              <div style={{...styles.result, ...(results.ch1 ? styles.resultOk : styles.resultBad)}}>
-                {results.ch1 ? "Correct! ✅" : (<>Incorrect — correct: <span style={styles.correctFlag}>{EXPECTED.ch1}</span></>)}
+              <div style={{ ...styles.result, ...(results.ch1 ? styles.resultOk : styles.resultBad) }}>
+                {results.ch1 ? "Correct!" : "Incorrect"}
               </div>
             )}
           </div>
         </section>
 
         <section style={styles.challenge}>
-          <h3 style={styles.challengeTitle}>CHALLENGE 2: Extracting Key from Embedded SQLite Database</h3>
-          <p style={styles.description}>
-            In this challenge, an Android application was provided that requires a PIN code to reveal a key. However, no PIN code was configured. The goal is to decompile the APK file, locate embedded database files, and extract the key stored within them. This challenge highlights the risks of storing sensitive information in unprotected local databases within mobile applications.
-          </p>
-          <div style={styles.meta}>Source: Android02.apk → assets/*.db or res/raw/*.sqlite</div>
-          
-          <div style={styles.toolsList}>
-            <strong>🛠️ Tools Required:</strong> Kali Linux, apktool, sqlite3
-          </div>
-
-          <button style={styles.hintBtn} onClick={() => toggleHint('ch2')}>
-            {showHints.ch2 ? "Hide Methodology" : "Show Methodology"}
-          </button>
-          
-          {showHints.ch2 && (
-            <div style={styles.hint}>
-              <strong>📋 Step-by-Step Methodology:</strong>
-              <ol style={styles.methodologyList}>
-                <li>Download the APK file from PentesterLab</li>
-                <li>Decompile the APK using apktool:
-                  <pre style={styles.code}>apktool d Android02.apk</pre>
-                </li>
-                <li>Search for database files in the extracted directory:
-                  <pre style={styles.code}>find . -name "*.db" -o -name "*.sqlite"</pre>
-                </li>
-                <li>Verify database names by examining AndroidManifest.xml</li>
-                <li>Open the database file using sqlite3:
-                  <pre style={styles.code}>sqlite3 database_name.db</pre>
-                </li>
-                <li>List available tables:
-                  <pre style={styles.code}>.tables</pre>
-                </li>
-                <li>Query the tables to retrieve the key:
-                  <pre style={styles.code}>SELECT * FROM table_name;</pre>
-                </li>
-              </ol>
-              
-              <div style={styles.securityNote}>
-                <strong>🔐 Security Observation:</strong> Sensitive data stored in unencrypted SQLite databases can be easily extracted by attackers through APK reverse engineering. Proper encryption and secure storage practices (like Android KeyStore) are essential for protecting application data.
+          <h3 style={styles.challengeTitle}>QUESTION 2: Android Device Exposure Duration</h3>
+          <p style={styles.description}>Task: Identify how long the Android device has been visible on the internet. Tool: Shodan.io. Hint: Check “Last Seen” and “First Seen”.</p>
+          <input
+            style={styles.input}
+            placeholder="Enter flag (e.g. FLAG{LONG_TERM_EXPOSURE})"
+            value={answers.ch2}
+            onChange={(e) => handleChange('ch2', e.target.value)}
+          />
+          <div style={styles.actions}>
+            <button
+              style={answers.ch2.trim() ? styles.submit : styles.submitDisabled}
+              onClick={() => handleSubmit('ch2')}
+              disabled={!answers.ch2.trim()}
+            >
+              Submit
+            </button>
+            {results.ch2 !== null && (
+              <div style={{ ...styles.result, ...(results.ch2 ? styles.resultOk : styles.resultBad) }}>
+                {results.ch2 ? "Correct!" : "Incorrect"}
               </div>
+            )}
+          </div>
+        </section>
+
+        <section style={styles.challenge}>
+          <h3 style={styles.challengeTitle}>QUESTION 3: Android Network Environment Analysis</h3>
+          <p style={styles.description}>Task: Identify whether the Android device is hosted in: Home network, Cloud, Corporate network. Tool: Shodan.io. Hint: Cloud providers are clearly named.</p>
+          <input
+            style={styles.input}
+            placeholder="Enter flag (e.g. FLAG{CLOUD_ENVIRONMENT})"
+            value={answers.ch3}
+            onChange={(e) => handleChange('ch3', e.target.value)}
+          />
+          <div style={styles.actions}>
+            <button
+              style={answers.ch3.trim() ? styles.submit : styles.submitDisabled}
+              onClick={() => handleSubmit('ch3')}
+              disabled={!answers.ch3.trim()}
+            >
+              Submit
+            </button>
+            {results.ch3 !== null && (
+              <div style={{ ...styles.result, ...(results.ch3 ? styles.resultOk : styles.resultBad) }}>
+                {results.ch3 ? "Correct!" : "Incorrect"}
+              </div>
+            )}
+          </div>
+        </section>
+
+        <section style={styles.challenge}>
+          <h3 style={styles.challengeTitle}>QUESTION 4: First seen device boot time</h3>
+          <p style={styles.description}>File: eventlogs/ Task: Using ALE APP, identify the first boot event. Tool: ALEAPP. Hint: Look under- System Events -&gt; Boot Time</p>
+          <input
+            style={styles.input}
+            placeholder="Enter flag (e.g. FLAG{FIRST_BOOT:2026-01-08:00})"
+            value={answers.ch4}
+            onChange={(e) => handleChange('ch4', e.target.value)}
+          />
+          <div style={styles.actions}>
+            <button
+              style={answers.ch4.trim() ? styles.submit : styles.submitDisabled}
+              onClick={() => handleSubmit('ch4')}
+              disabled={!answers.ch4.trim()}
+            >
+              Submit
+            </button>
+            {results.ch4 !== null && (
+              <div style={{ ...styles.result, ...(results.ch4 ? styles.resultOk : styles.resultBad) }}>
+                {results.ch4 ? "Correct!" : "Incorrect"}
+              </div>
+            )}
+          </div>
+        </section>
+        </>
+        ) : (
+        <>
+        {/* Intermediate questions */}
+        <section style={styles.challenge}>
+          <h3 style={styles.challengeTitle}>Question 1 – Flag Discovery (APK Analysis)</h3>
+          <p style={styles.description}>
+            The bank provides an official Android application for customers. Analyze the mobile application and identify any sensitive information disclosure.
+          </p>
+        </section>
+
+        <section style={styles.challenge}>
+          <h3 style={styles.challengeTitle}>Question 2 – Find the hidden flag</h3>
+          <p style={styles.description}>
+            The APK contains a hidden file in the assets directory.
+          </p>
+          <div style={styles.meta}>Vulnerability Location: APK assets folder</div>
+
+          <button style={styles.hintBtn} onClick={() => toggleHintI('ch2')}>
+            {showHintsI.ch2 ? "Hide Methodology" : "Show Methodology"}
+          </button>
+          {showHintsI.ch2 && (
+            <div style={styles.hint}>
+              <strong>📋 How to solve:</strong>
+              <ol style={styles.methodologyList}>
+                <li>Download the APK file from the banking site</li>
+                <li>Decode with apktool: <pre style={styles.code}>apktool d app.apk</pre></li>
+                <li>Navigate into the <code>assets/</code> folder</li>
+                <li>Open any suspicious files to reveal the flag</li>
+              </ol>
             </div>
           )}
-          
-          <input style={styles.input} placeholder="Enter flag (e.g. flag{...})" value={answers.ch2} onChange={(e)=>handleChange('ch2', e.target.value)} />
+
+          <input style={styles.input} placeholder="Enter flag (e.g. CTF{...})" value={answersI.ch2} onChange={(e)=>handleChangeI('ch2', e.target.value)} />
           <div style={styles.actions}>
-            <button style={answers.ch2.trim() ? styles.submit : styles.submitDisabled} onClick={()=>handleSubmit('ch2')} disabled={!answers.ch2.trim()}>Submit</button>
-            {results.ch2 !== null && (
-              <div style={{...styles.result, ...(results.ch2 ? styles.resultOk : styles.resultBad)}}>
-                {results.ch2 ? "Correct! ✅" : (<>Incorrect — correct: <span style={styles.correctFlag}>{EXPECTED.ch2}</span></>)}
+            <button style={answersI.ch2.trim() ? styles.submit : styles.submitDisabled} onClick={()=>handleSubmitI('ch2')} disabled={!answersI.ch2.trim()}>Submit</button>
+            {resultsI.ch2 !== null && (
+              <div style={{...styles.result, ...(resultsI.ch2 ? styles.resultOk : styles.resultBad)}}>
+                {resultsI.ch2 ? "Correct! ✅" : "Incorrect"}
               </div>
             )}
           </div>
         </section>
 
         <section style={styles.challenge}>
-          <div style={{background: '#eff6ff', padding: '15px', borderRadius: '6px', border: '1px solid #93c5fd'}}>
-            <h4 style={{marginTop: 0, color: '#1e40af'}}>✅ Learning Outcomes</h4>
-            <ul style={{...styles.methodologyList, marginBottom: 0}}>
-              <li>Understanding APK structure and components</li>
-              <li>Using apktool for Android reverse engineering</li>
-              <li>Identifying insecure data storage practices in mobile apps</li>
-              <li>Extracting information from SQLite databases</li>
-              <li>Recognizing common Android security vulnerabilities</li>
-            </ul>
+          <h3 style={styles.challengeTitle}>Question 3 – Credential Exposure</h3>
+          <p style={styles.description}>
+            The mobile banking application includes a login feature. Determine whether authentication credentials are securely implemented.
+          </p>
+          <div style={styles.meta}>Vulnerability Location: Hardcoded login logic in MainActivity</div>
+
+          <button style={styles.hintBtn} onClick={() => toggleHintI('ch3')}>
+            {showHintsI.ch3 ? "Hide Methodology" : "Show Methodology"}
+          </button>
+          {showHintsI.ch3 && (
+            <div style={styles.hint}>
+              <strong>📋 How to solve:</strong>
+              <ol style={styles.methodologyList}>
+                <li>Open the APK in jadx decompiler</li>
+                <li>Search for strings like "admin" or "password"</li>
+                <li>Inspect MainActivity or auth classes for hardcoded credentials</li>
+              </ol>
+            </div>
+          )}
+
+          <input style={styles.input} placeholder="Enter flag (e.g. HQX{...})" value={answersI.ch3} onChange={(e)=>handleChangeI('ch3', e.target.value)} />
+          <div style={styles.actions}>
+            <button style={answersI.ch3.trim() ? styles.submit : styles.submitDisabled} onClick={()=>handleSubmitI('ch3')} disabled={!answersI.ch3.trim()}>Submit</button>
+            {resultsI.ch3 !== null && (
+              <div style={{...styles.result, ...(resultsI.ch3 ? styles.resultOk : styles.resultBad)}}>
+                {resultsI.ch3 ? "Correct! ✅" : "Incorrect"}
+              </div>
+            )}
           </div>
         </section>
+
+        <section style={styles.challenge}>
+          <h3 style={styles.challengeTitle}>Question 4 – Secret Key Exposure</h3>
+          <p style={styles.description}>
+            The banking application communicates with backend services. Check whether any secret keys or sensitive tokens are exposed.
+          </p>
+          <div style={styles.meta}>Vulnerability Location: Base64 encoded string in utility class</div>
+
+          <button style={styles.hintBtn} onClick={() => toggleHintI('ch4')}>
+            {showHintsI.ch4 ? "Hide Methodology" : "Show Methodology"}
+          </button>
+          {showHintsI.ch4 && (
+            <div style={styles.hint}>
+              <strong>📋 How to solve:</strong>
+              <ol style={styles.methodologyList}>
+                <li>Search within jadx for common encodings</li>
+                <li>Spot Base64-like strings in utility or config classes</li>
+                <li>Decode with <code>base64 -d</code> to reveal the flag</li>
+              </ol>
+            </div>
+          )}
+
+          <input style={styles.input} placeholder="Enter flag (e.g. CTF{...})" value={answersI.ch4} onChange={(e)=>handleChangeI('ch4', e.target.value)} />
+          <div style={styles.actions}>
+            <button style={answersI.ch4.trim() ? styles.submit : styles.submitDisabled} onClick={()=>handleSubmitI('ch4')} disabled={!answersI.ch4.trim()}>Submit</button>
+            {resultsI.ch4 !== null && (
+              <div style={{...styles.result, ...(resultsI.ch4 ? styles.resultOk : styles.resultBad)}}>
+                {resultsI.ch4 ? "Correct! ✅" : "Incorrect"}
+              </div>
+            )}
+          </div>
+        </section>
+        </>
+        )}
       </div>
     </div>
   );

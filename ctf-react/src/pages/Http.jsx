@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 
 const EXPECTED = { 
+  ch0: "FLAG{GET}",
   ch1: "flag{http_comment_leak}", 
   ch2: "flag{http_auth_leak}", 
   ch3: "flag{http_debug_exposed}"
@@ -140,9 +141,9 @@ function Http() {
   const location = useLocation();
   const level = location.state?.level || "Beginner";
   
-  const [answers, setAnswers] = useState({ ch1: "", ch2: "", ch3: "" });
-  const [results, setResults] = useState({ ch1: null, ch2: null, ch3: null });
-  const [showHints, setShowHints] = useState({ ch1: false, ch2: false, ch3: false });
+  const [answers, setAnswers] = useState({ ch0: "", ch1: "", ch2: "", ch3: "" });
+  const [results, setResults] = useState({ ch0: null, ch1: null, ch2: null, ch3: null });
+  const [showHints, setShowHints] = useState({ ch0: false, ch1: false, ch2: false, ch3: false });
 
   const handleChange = (k, v) => setAnswers((s) => ({ ...s, [k]: v }));
   const handleSubmit = (k) => setResults((r) => ({ ...r, [k]: (answers[k] || "").trim() === EXPECTED[k] }));
@@ -156,7 +157,22 @@ function Http() {
       {level === "Beginner" ? (
         <div>
         <section style={styles.challenge}>
-          <h3 style={styles.challengeTitle}>CHALLENGE 1: HTTP Header Comment Leak</h3>
+          <h3 style={styles.challengeTitle}>QUESTION 1: HTTP Method</h3>
+          <p style={styles.description}>Open DevTools → Network → reload page → find request method.</p>
+          <div style={styles.meta}>Tool: Browser DevTools</div>
+          <input style={styles.input} placeholder="Enter flag (e.g. flag{...})" value={answers.ch0} onChange={(e)=>handleChange('ch0', e.target.value)} />
+          <div style={styles.actions}>
+            <button style={answers.ch0.trim() ? styles.submit : styles.submitDisabled} onClick={()=>handleSubmit('ch0')} disabled={!answers.ch0.trim()}>Submit</button>
+            {results.ch0 !== null && (
+              <div style={{...styles.result, ...(results.ch0 ? styles.resultOk : styles.resultBad)}}>
+                {results.ch0 ? "Correct!" : "Incorrect"}
+              </div>
+            )}
+          </div>
+        </section>
+
+        <section style={styles.challenge}>
+          <h3 style={styles.challengeTitle}>QUESTION 2: HTTP Header Comment Leak</h3>
           <p style={styles.description}>A web server claims that its HTTP response does not expose any sensitive information. However, developers sometimes leave important data inside HTTP comments or debug headers.</p>
           <div style={styles.meta}>Source File: ch1_http.txt</div>
           <button style={styles.hintBtn} onClick={() => toggleHint('ch1')}>
@@ -187,14 +203,14 @@ flag{http_comment_leak}
             <button style={answers.ch1.trim() ? styles.submit : styles.submitDisabled} onClick={()=>handleSubmit('ch1')} disabled={!answers.ch1.trim()}>Submit</button>
             {results.ch1 !== null && (
               <div style={{...styles.result, ...(results.ch1 ? styles.resultOk : styles.resultBad)}}>
-                {results.ch1 ? "Correct!" : (<>Incorrect — correct: <span style={styles.correctFlag}>{EXPECTED.ch1}</span></>)}
+                {results.ch1 ? "Correct!" : "Incorrect"}
               </div>
             )}
           </div>
         </section>
 
         <section style={styles.challenge}>
-          <h3 style={styles.challengeTitle}>CHALLENGE 2: HTTP Authorization Header Leak</h3>
+          <h3 style={styles.challengeTitle}>QUESTION 3: HTTP Authorization Header Leak</h3>
           <p style={styles.description}>A web application uses HTTP Basic Authentication. Sometimes developers accidentally expose sensitive information inside the Authorization header.</p>
           <div style={styles.meta}>Source File: ch2_http_auth.txt</div>
           <button style={styles.hintBtn} onClick={() => toggleHint('ch2')}>
@@ -216,14 +232,14 @@ Authorization: Basic ZmxhZ3todHRwX2F1dGhfbGVha30=`}</pre>
             <button style={answers.ch2.trim() ? styles.submit : styles.submitDisabled} onClick={()=>handleSubmit('ch2')} disabled={!answers.ch2.trim()}>Submit</button>
             {results.ch2 !== null && (
               <div style={{...styles.result, ...(results.ch2 ? styles.resultOk : styles.resultBad)}}>
-                {results.ch2 ? "Correct!" : (<>Incorrect — correct: <span style={styles.correctFlag}>{EXPECTED.ch2}</span></>)}
+                {results.ch2 ? "Correct!" : "Incorrect"}
               </div>
             )}
           </div>
         </section>
 
         <section style={styles.challenge}>
-          <h3 style={styles.challengeTitle}>CHALLENGE 3: HTTP Debug Mode Enabled</h3>
+          <h3 style={styles.challengeTitle}>QUESTION 4: HTTP Debug Mode Enabled</h3>
           <p style={styles.description}>A server is running in debug mode and exposes internal information in the HTTP response body. Such misconfigurations can lead to information disclosure.</p>
           <div style={styles.meta}>Source File: ch3_http_debug.txt</div>
           <button style={styles.hintBtn} onClick={() => toggleHint('ch3')}>
@@ -248,7 +264,7 @@ Last known secret: flag{http_debug_exposed}`}</pre>
             <button style={answers.ch3.trim() ? styles.submit : styles.submitDisabled} onClick={()=>handleSubmit('ch3')} disabled={!answers.ch3.trim()}>Submit</button>
             {results.ch3 !== null && (
               <div style={{...styles.result, ...(results.ch3 ? styles.resultOk : styles.resultBad)}}>
-                {results.ch3 ? "Correct!" : (<>Incorrect — correct: <span style={styles.correctFlag}>{EXPECTED.ch3}</span></>)}
+                {results.ch3 ? "Correct!" : "Incorrect"}
               </div>
             )}
           </div>

@@ -180,7 +180,7 @@ function Pcap() {
             <button style={answers.ch1.trim() ? styles.submit : styles.submitDisabled} onClick={()=>handleSubmit('ch1')} disabled={!answers.ch1.trim()}>Submit</button>
             {results.ch1 !== null && (
               <div style={{...styles.result, ...(results.ch1 ? styles.resultOk : styles.resultBad)}}>
-                {results.ch1 ? "Correct!" : (<>Incorrect — correct: <span style={styles.correctFlag}>{EXPECTED.ch1}</span></>)}
+                {results.ch1 ? "Correct!" : "Incorrect"}
               </div>
             )}
           </div>
@@ -207,7 +207,7 @@ function Pcap() {
             <button style={answers.ch2.trim() ? styles.submit : styles.submitDisabled} onClick={()=>handleSubmit('ch2')} disabled={!answers.ch2.trim()}>Submit</button>
             {results.ch2 !== null && (
               <div style={{...styles.result, ...(results.ch2 ? styles.resultOk : styles.resultBad)}}>
-                {results.ch2 ? "Correct!" : (<>Incorrect — correct: <span style={styles.correctFlag}>{EXPECTED.ch2}</span></>)}
+                {results.ch2 ? "Correct!" : "Incorrect"}
               </div>
             )}
           </div>
@@ -235,7 +235,7 @@ function Pcap() {
             <button style={answers.ch3.trim() ? styles.submit : styles.submitDisabled} onClick={()=>handleSubmit('ch3')} disabled={!answers.ch3.trim()}>Submit</button>
             {results.ch3 !== null && (
               <div style={{...styles.result, ...(results.ch3 ? styles.resultOk : styles.resultBad)}}>
-                {results.ch3 ? "Correct!" : (<>Incorrect — correct: <span style={styles.correctFlag}>{EXPECTED.ch3}</span></>)}
+                {results.ch3 ? "Correct!" : "Incorrect"}
               </div>
             )}
           </div>
@@ -263,7 +263,7 @@ function Pcap() {
             <button style={answers.ch4.trim() ? styles.submit : styles.submitDisabled} onClick={()=>handleSubmit('ch4')} disabled={!answers.ch4.trim()}>Submit</button>
             {results.ch4 !== null && (
               <div style={{...styles.result, ...(results.ch4 ? styles.resultOk : styles.resultBad)}}>
-                {results.ch4 ? "Correct!" : (<>Incorrect — correct: <span style={styles.correctFlag}>{EXPECTED.ch4}</span></>)}
+                {results.ch4 ? "Correct!" : "Incorrect"}
               </div>
             )}
           </div>

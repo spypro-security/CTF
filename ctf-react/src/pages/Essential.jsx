@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 
 const EXPECTED = { 
-  ch1: "flag{hidden_in_comments}", 
-  ch2: "flag{base64_decoded}", 
-  ch3: "flag{log_leaked}"
+  ch1: "flag{country}", 
+  ch2: "flag{backend}", 
+  ch3: "flag{cms}",
+  ch4: "flag{hosting}"
 };
 
 const styles = {
@@ -172,12 +173,17 @@ function Essential() {
   const location = useLocation();
   const level = location.state?.level || "Beginner";
   
-  const [answers, setAnswers] = useState({ ch1: "", ch2: "", ch3: "" });
-  const [results, setResults] = useState({ ch1: null, ch2: null, ch3: null });
-  const [showHints, setShowHints] = useState({ ch1: false, ch2: false, ch3: false });
+  const [answers, setAnswers] = useState({ ch1: "", ch2: "", ch3: "", ch4: "" });
+  const [results, setResults] = useState({ ch1: null, ch2: null, ch3: null, ch4: null });
+  const [showHints, setShowHints] = useState({ ch1: false, ch2: false, ch3: false, ch4: false });
 
   const handleChange = (k, v) => setAnswers((s) => ({ ...s, [k]: v }));
-  const handleSubmit = (k) => setResults((r) => ({ ...r, [k]: (answers[k] || "").trim() === EXPECTED[k] }));
+  const handleSubmit = (k) => {
+    const given = (answers[k] || "").trim().toLowerCase();
+    const flagRegex = /^flag\{.+\}$/;
+    const ok = flagRegex.test(given);
+    setResults((r) => ({ ...r, [k]: ok }));
+  };
   const toggleHint = (k) => setShowHints((s) => ({ ...s, [k]: !s[k] }));
 
   return (
@@ -188,32 +194,32 @@ function Essential() {
       {level === "Beginner" ? (
         <div>
           <div style={styles.conceptsBox}>
-        <h3 style={styles.conceptTitle}>🎯 Essential Concepts Covered</h3>
+        <h3 style={styles.conceptTitle}>🎯 OSINT Reconnaissance Skills</h3>
         <ul style={styles.conceptList}>
-          <li><strong>Information Disclosure</strong> - Sensitive data may be hidden inside comments, unused code, or metadata</li>
-          <li><strong>Hidden Data in Files</strong> - Attackers often inspect files carefully to locate such information</li>
-          <li><strong>Encoding and Decoding</strong> - Methods like Base64 and Hex are reversible and not secure</li>
-          <li><strong>Log Analysis</strong> - Debug logs may expose confidential tokens, keys, or internal data</li>
+          <li><strong>Shodan Search Engine</strong> - Find Internet-connected devices and identify server locations</li>
+          <li><strong>Technology Fingerprinting</strong> - Identify backend web servers, CMS platforms, and frameworks</li>
+          <li><strong>Infrastructure Analysis</strong> - Detect CDN providers, hosting companies, and DNS information</li>
+          <li><strong>Passive Reconnaissance</strong> - Gather information without directly attacking the target</li>
         </ul>
         
         <div style={styles.securityBox}>
-          <div style={styles.securityTitle}>🔐 Security Best Practices</div>
+          <div style={styles.securityTitle}>🔐 Tools Used</div>
           <ul style={{...styles.conceptList, marginBottom: 0}}>
-            <li>Remove comments before deployment</li>
-            <li>Never store secrets in source code</li>
-            <li>Secure and monitor log files</li>
-            <li>Use encryption, not encoding, for sensitive data</li>
+            <li><strong>Shodan.io</strong> - Search engine for Internet-connected devices</li>
+            <li><strong>Wappalyzer</strong> - Browser extension for technology detection</li>
+            <li><strong>BuiltWith</strong> - Website technology profiler</li>
+            <li><strong>curl & dig</strong> - Command-line tools for HTTP headers and DNS queries</li>
           </ul>
         </div>
       </div>
 
       <div>
         <section style={styles.challenge}>
-          <h3 style={styles.challengeTitle}>CHALLENGE 1: Hidden in Comments</h3>
+          <h3 style={styles.challengeTitle}>CHALLENGE 1: Country Identification</h3>
           <p style={styles.description}>
-            Developers may forget to remove comments that contain sensitive data. Comments in source code are often overlooked but remain accessible to anyone who can view the code.
+            Using Shodan search engine, identify the country where a server is located. Geographical information helps attackers narrow down their target and understand infrastructure distribution.
           </p>
-          <div style={styles.meta}>Source File: ch1_note.txt</div>
+          <div style={styles.meta}>Tool: Shodan.io</div>
           
           <button style={styles.hintBtn} onClick={() => toggleHint('ch1')}>
             {showHints.ch1 ? "Hide Hint" : "Show Hint"}
@@ -221,43 +227,40 @@ function Essential() {
           
           {showHints.ch1 && (
             <div style={styles.hint}>
-              <strong>💡 Concept: Hidden Information</strong>
+              <strong>💡 OSINT Technique: Geolocation via Shodan</strong>
               <p style={{marginTop: '8px', fontSize: '0.875rem', color: '#374151'}}>
-                Sensitive data may be hidden inside comments, unused code, or metadata. Attackers often inspect files carefully to locate such information.
+                Shodan is a search engine specifically designed for finding Internet-connected devices and servers. It provides geolocation information, open ports, and other metadata.
               </p>
-              <strong style={{display: 'block', marginTop: '12px'}}>Example Source:</strong>
-              <pre style={styles.code}>{`<!-- This is a public page -->
-<html>
-  <body>
-    <h1>Welcome</h1>
-    <!-- TODO: Remove this before production
-         API_KEY: flag{hidden_in_comments}
-    -->
-  </body>
-</html>`}</pre>
+              <strong style={{display: 'block', marginTop: '12px'}}>Steps to identify country:</strong>
+              <ul style={{fontSize: '0.875rem', color: '#6b7280', marginLeft: '20px'}}>
+                <li>Visit <strong>Shodan.io</strong> and create a free account</li>
+                <li>Search for a domain or IP address</li>
+                <li>Look at the search results for "Location" information</li>
+                <li>The country will be displayed in the geolocation data</li>
+              </ul>
               <p style={{marginTop: '10px', fontSize: '0.875rem', color: '#6b7280'}}>
-                <strong>Hint:</strong> Look for HTML comments (&lt;!-- --&gt;), JavaScript comments (// or /* */), or any commented-out code that might contain sensitive information.
+                <strong>Hint:</strong> Try searching for any popular website like "amazon.com" and check the location information in results.
               </p>
             </div>
           )}
           
-          <input style={styles.input} placeholder="Enter flag (e.g. flag{...})" value={answers.ch1} onChange={(e)=>handleChange('ch1', e.target.value)} />
+          <input style={styles.input} placeholder="Enter flag (e.g. flag{COUNTRY})" value={answers.ch1} onChange={(e)=>handleChange('ch1', e.target.value)} />
           <div style={styles.actions}>
             <button style={answers.ch1.trim() ? styles.submit : styles.submitDisabled} onClick={()=>handleSubmit('ch1')} disabled={!answers.ch1.trim()}>Submit</button>
             {results.ch1 !== null && (
               <div style={{...styles.result, ...(results.ch1 ? styles.resultOk : styles.resultBad)}}>
-                {results.ch1 ? "Correct! ✅" : (<>Incorrect — correct: <span style={styles.correctFlag}>{EXPECTED.ch1}</span></>)}
+                {results.ch1 ? "Correct! ✅" : "Incorrect"}
               </div>
             )}
           </div>
         </section>
 
         <section style={styles.challenge}>
-          <h3 style={styles.challengeTitle}>CHALLENGE 2: Base Trouble</h3>
+          <h3 style={styles.challengeTitle}>CHALLENGE 2: Backend Technology Detection</h3>
           <p style={styles.description}>
-            Encoded data was found in a JavaScript file. Encoding methods like Base64 are used for data representation, not protection. They are easily reversible.
+            Identify the backend web server technology powering a website. Different web servers (Nginx, Apache, IIS) have known vulnerabilities that attackers can exploit.
           </p>
-          <div style={styles.meta}>Source File: ch2_script.js</div>
+          <div style={styles.meta}>Tools: Wappalyzer, BuiltWith, HTTP Headers</div>
           
           <button style={styles.hintBtn} onClick={() => toggleHint('ch2')}>
             {showHints.ch2 ? "Hide Hint" : "Show Hint"}
@@ -265,39 +268,40 @@ function Essential() {
           
           {showHints.ch2 && (
             <div style={styles.hint}>
-              <strong>💡 Concept: Encoding vs Encryption</strong>
+              <strong>💡 OSINT Technique: Technology Fingerprinting</strong>
               <p style={{marginTop: '8px', fontSize: '0.875rem', color: '#374151'}}>
-                Encoding methods like Base64 and Hex are reversible and not secure. They are commonly used for data representation, not protection. Anyone can decode them!
+                Web servers often reveal their identity through HTTP response headers, error pages, or distinctive patterns in responses.
               </p>
-              <strong style={{display: 'block', marginTop: '12px'}}>Example Source:</strong>
-              <pre style={styles.code}>{`// JavaScript configuration
-const config = {
-  apiEndpoint: "/api/v1",
-  secret: "ZmxhZ3tiYXNlNjRfZGVjb2RlZH0="
-};`}</pre>
+              <strong style={{display: 'block', marginTop: '12px'}}>Methods to identify backend technology:</strong>
+              <ul style={{fontSize: '0.875rem', color: '#6b7280', marginLeft: '20px'}}>
+                <li>Install <strong>Wappalyzer</strong> browser extension</li>
+                <li>Use <strong>BuiltWith</strong> online tool at builtwith.com</li>
+                <li>Check HTTP headers: <code>curl -I website.com</code></li>
+                <li>Common backends: <strong>Nginx, Apache, IIS, Node.js</strong></li>
+              </ul>
               <p style={{marginTop: '10px', fontSize: '0.875rem', color: '#6b7280'}}>
-                <strong>Hint:</strong> The string ends with "=" which is a common Base64 padding character. Decode it using an online Base64 decoder or command: <code>echo "string" | base64 -d</code>
+                <strong>Hint:</strong> Visit any website and use Wappalyzer to see the technology stack revealed instantly.
               </p>
             </div>
           )}
           
-          <input style={styles.input} placeholder="Enter flag (e.g. flag{...})" value={answers.ch2} onChange={(e)=>handleChange('ch2', e.target.value)} />
+          <input style={styles.input} placeholder="Enter flag (e.g. flag{NGINX})" value={answers.ch2} onChange={(e)=>handleChange('ch2', e.target.value)} />
           <div style={styles.actions}>
             <button style={answers.ch2.trim() ? styles.submit : styles.submitDisabled} onClick={()=>handleSubmit('ch2')} disabled={!answers.ch2.trim()}>Submit</button>
             {results.ch2 !== null && (
               <div style={{...styles.result, ...(results.ch2 ? styles.resultOk : styles.resultBad)}}>
-                {results.ch2 ? "Correct! ✅" : (<>Incorrect — correct: <span style={styles.correctFlag}>{EXPECTED.ch2}</span></>)}
+                {results.ch2 ? "Correct! ✅" : "Incorrect"}
               </div>
             )}
           </div>
         </section>
 
         <section style={styles.challenge}>
-          <h3 style={styles.challengeTitle}>CHALLENGE 3: Leaked Logs</h3>
+          <h3 style={styles.challengeTitle}>CHALLENGE 3: CMS Detection</h3>
           <p style={styles.description}>
-            Sensitive data was found inside system logs. Debug logs may expose confidential tokens, keys, or internal data if not properly sanitized before being written to disk or sent to logging services.
+            Identify the Content Management System (CMS) used by a website. Popular CMS platforms like WordPress have numerous plugins and known vulnerabilities.
           </p>
-          <div style={styles.meta}>Source File: ch3_logs.txt</div>
+          <div style={styles.meta}>Tool: Wappalyzer</div>
           
           <button style={styles.hintBtn} onClick={() => toggleHint('ch3')}>
             {showHints.ch3 ? "Hide Hint" : "Show Hint"}
@@ -305,28 +309,70 @@ const config = {
           
           {showHints.ch3 && (
             <div style={styles.hint}>
-              <strong>💡 Concept: Log File Leakage</strong>
+              <strong>💡 OSINT Technique: CMS Fingerprinting</strong>
               <p style={{marginTop: '8px', fontSize: '0.875rem', color: '#374151'}}>
-                Debug logs may expose confidential tokens, keys, or internal data if not properly sanitized. Logs are often overlooked as a security risk but can contain valuable information for attackers.
+                WordPress, Drupal, Joomla, and other CMSs have distinctive file structures and patterns that make them easy to identify.
               </p>
-              <strong style={{display: 'block', marginTop: '12px'}}>Example Log File:</strong>
-              <pre style={styles.code}>{`[2024-01-15 10:23:45] INFO: Application started
-[2024-01-15 10:23:46] DEBUG: Loading configuration
-[2024-01-15 10:23:47] DEBUG: API Key: flag{log_leaked}
-[2024-01-15 10:23:48] INFO: Server listening on port 8080
-[2024-01-15 10:23:49] ERROR: Failed to connect to database`}</pre>
+              <strong style={{display: 'block', marginTop: '12px'}}>Methods to identify CMS:</strong>
+              <ul style={{fontSize: '0.875rem', color: '#6b7280', marginLeft: '20px'}}>
+                <li>Install <strong>Wappalyzer</strong> browser extension</li>
+                <li>Check for CMS-specific URLs: <code>/wp-admin/, /admin/, /index.php?</code></li>
+                <li>Look for common CMS files and directories</li>
+                <li>Common CMSs: <strong>WordPress, Drupal, Joomla, Magento</strong></li>
+              </ul>
               <p style={{marginTop: '10px', fontSize: '0.875rem', color: '#6b7280'}}>
-                <strong>Hint:</strong> Look for DEBUG level logs or any entries that contain credentials, tokens, API keys, or sensitive configuration data. Grep for keywords like "key", "token", "password", "secret", or "flag".
+                <strong>Hint:</strong> Many websites use WordPress. Try checking any popular blog or news site with Wappalyzer.
               </p>
             </div>
           )}
           
-          <input style={styles.input} placeholder="Enter flag (e.g. flag{...})" value={answers.ch3} onChange={(e)=>handleChange('ch3', e.target.value)} />
+          <input style={styles.input} placeholder="Enter flag (e.g. flag{WORDPRESS})" value={answers.ch3} onChange={(e)=>handleChange('ch3', e.target.value)} />
           <div style={styles.actions}>
             <button style={answers.ch3.trim() ? styles.submit : styles.submitDisabled} onClick={()=>handleSubmit('ch3')} disabled={!answers.ch3.trim()}>Submit</button>
             {results.ch3 !== null && (
               <div style={{...styles.result, ...(results.ch3 ? styles.resultOk : styles.resultBad)}}>
-                {results.ch3 ? "Correct! ✅" : (<>Incorrect — correct: <span style={styles.correctFlag}>{EXPECTED.ch3}</span></>)}
+                {results.ch3 ? "Correct! ✅" : "Incorrect"}
+              </div>
+            )}
+          </div>
+        </section>
+
+        <section style={styles.challenge}>
+          <h3 style={styles.challengeTitle}>CHALLENGE 4: Hosting Provider Identification</h3>
+          <p style={styles.description}>
+            Identify the hosting provider or Content Delivery Network (CDN) used by a website. Different providers have different infrastructure and security practices.
+          </p>
+          <div style={styles.meta}>Tool: BuiltWith</div>
+          
+          <button style={styles.hintBtn} onClick={() => toggleHint('ch4')}>
+            {showHints.ch4 ? "Hide Hint" : "Show Hint"}
+          </button>
+          
+          {showHints.ch4 && (
+            <div style={styles.hint}>
+              <strong>💡 OSINT Technique: Infrastructure Analysis</strong>
+              <p style={{marginTop: '8px', fontSize: '0.875rem', color: '#374151'}}>
+                Hosting providers and CDNs can be identified through DNS records, IP address ownership, and service headers.
+              </p>
+              <strong style={{display: 'block', marginTop: '12px'}}>Methods to identify hosting:</strong>
+              <ul style={{fontSize: '0.875rem', color: '#6b7280', marginLeft: '20px'}}>
+                <li>Use <strong>BuiltWith</strong> tool at builtwith.com</li>
+                <li>Use <strong>Wappalyzer</strong> browser extension</li>
+                <li>Use WHOIS lookup with <code>whois domain.com</code></li>
+                <li>Common CDNs: <strong>Cloudflare, AWS, Akamai, Fastly</strong></li>
+              </ul>
+              <p style={{marginTop: '10px', fontSize: '0.875rem', color: '#6b7280'}}>
+                <strong>Hint:</strong> Many websites use Cloudflare for DDoS protection. Check any site with BuiltWith tool.
+              </p>
+            </div>
+          )}
+          
+          <input style={styles.input} placeholder="Enter flag (e.g. flag{CLOUDFLARE})" value={answers.ch4} onChange={(e)=>handleChange('ch4', e.target.value)} />
+          <div style={styles.actions}>
+            <button style={answers.ch4.trim() ? styles.submit : styles.submitDisabled} onClick={()=>handleSubmit('ch4')} disabled={!answers.ch4.trim()}>Submit</button>
+            {results.ch4 !== null && (
+              <div style={{...styles.result, ...(results.ch4 ? styles.resultOk : styles.resultBad)}}>
+                {results.ch4 ? "Correct! ✅" : "Incorrect"}
               </div>
             )}
           </div>
@@ -336,7 +382,7 @@ const config = {
           <div style={{background: '#eff6ff', padding: '15px', borderRadius: '6px', border: '1px solid #93c5fd'}}>
             <h4 style={{marginTop: 0, color: '#1e40af'}}>📚 Conclusion</h4>
             <p style={{color: '#374151', lineHeight: '1.6', marginBottom: 0}}>
-              Understanding these essential concepts helps prevent common security mistakes and strengthens basic cybersecurity awareness. Always remember: encoding is not encryption, comments are not private, and logs can be treasure troves of sensitive information for attackers.
+              You've mastered essential OSINT reconnaissance techniques! Using tools like Shodan, Wappalyzer, and BuiltWith, you can identify server locations, technology stacks, CMS platforms, and hosting infrastructure without ever directly attacking the target. These passive reconnaissance skills are crucial for understanding your target before launching any offensive security assessment.
             </p>
           </div>
         </section>
